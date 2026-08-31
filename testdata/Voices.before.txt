@@ -1,0 +1,11 @@
+doc.md:3:1:Voices.ThroatClearing:Throat-clearing: 'Here's the thing'. Cut it and state the point.
+doc.md:9:6:Voices.BinaryContrast:Binary contrast: 'is not just a performance problem, it's'. State the second half directly.
+doc.md:10:35:Voices.Weasel:Weasel attribution: 'experts agree'. Name the source or cut the claim.
+doc.md:11:1:Voices.Banned:Inflated word: 'robust'. Say the plain thing.
+doc.md:11:25:Voices.Banned:Inflated word: 'paradigm shift'. Say the plain thing.
+doc.md:11:45:Voices.Banned:Inflated word: 'empower'. Say the plain thing.
+doc.md:12:9:Voices.Banned:Inflated word: 'streamline'. Say the plain thing.
+doc.md:13:5:Voices.SuperficialAnalysis:Superficial analysis: ', underscoring'. Say what it does for the reader.
+doc.md:15:1:Voices.Recap:Recap ending: 'In conclusion'. End on the last concrete point.
+doc.md:15:25:Voices.WeakVerbs:Weak verb phrase: use 'decided' instead of 'made a decision'.
+doc.md:15:44:Voices.Banned:Inflated word: 'leverage'. Say the plain thing.

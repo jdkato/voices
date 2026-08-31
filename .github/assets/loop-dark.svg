@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 130" width="640" height="130">
+<defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto"><path d="M0 0 L8 3.5 L0 7 z" fill="#71717a"/></marker><marker id="b" markerWidth="8" markerHeight="8" refX="7" refY="3.5" orient="auto"><path d="M0 0 L8 3.5 L0 7 z" fill="#65a30d"/></marker></defs>
+<rect x="8" y="34" width="144" height="44" rx="8" fill="#18181b" stroke="#3f3f46" stroke-width="1"/><text x="80.0" y="60.5" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" fill="#e4e4e7">agent writes</text>
+<rect x="176" y="34" width="144" height="44" rx="8" fill="#18181b" stroke="#3f3f46" stroke-width="1"/><text x="248.0" y="60.5" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" fill="#e4e4e7">vale --ext=.md</text>
+<rect x="344" y="34" width="144" height="44" rx="8" fill="#18181b" stroke="#3f3f46" stroke-width="1"/><text x="416.0" y="60.5" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" fill="#e4e4e7">agent fixes</text>
+<line x1="152" y1="56" x2="168" y2="56" stroke="#71717a" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="320" y1="56" x2="336" y2="56" stroke="#71717a" stroke-width="1.5" marker-end="url(#a)"/>
+<line x1="496" y1="56" x2="512" y2="56" stroke="#65a30d" stroke-width="1.5" marker-end="url(#b)"/>
+<rect x="520" y="34" width="112" height="44" rx="8" fill="#1a2e05" stroke="#65a30d" stroke-width="1"/><text x="576.0" y="60.5" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="13" fill="#a3e635">exit 0</text>
+<path d="M416 82 L416 108 L248 108 L248 82" fill="none" stroke="#71717a" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#a)"/>
+<text x="332" y="123" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="11" fill="#a1a1aa">exit 1 &#183; alerts</text>
+</svg>

@@ -1,0 +1,6 @@
+extends: occurrence
+message: "Sentence runs to %d words. Smart Brevity caps it at twenty."
+level: warning
+scope: sentence
+max: 20
+token: '\b\w+\b'

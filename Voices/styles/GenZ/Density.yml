@@ -1,0 +1,9 @@
+# "One slang hit per sentence, max." The source style asks the model to check
+# this by re-reading its own draft and counting. Counting is the one thing a
+# rule does exactly.
+extends: occurrence
+message: "%d slang terms in one sentence. Budget is one."
+level: error
+scope: sentence
+max: 1
+token: '\b(?:W|L|cooked|rizz|mid|no cap|fr fr|based(?!\s+(?:on|upon|in))|aura|delulu|skibidi|bussin|goated|lowkey|highkey|glazing|cap)\b'

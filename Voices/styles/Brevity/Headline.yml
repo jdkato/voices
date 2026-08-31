@@ -1,0 +1,8 @@
+# Smart Brevity opens on a headline short enough to read at a glance. Six
+# words is the stated budget; `scope: heading` applies it to each one.
+extends: occurrence
+message: "Headline runs to %d words. Six is the budget."
+level: error
+scope: heading
+max: 6
+token: '\b[\w-]+\b'

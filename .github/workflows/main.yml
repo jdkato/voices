@@ -1,0 +1,49 @@
+name: Build + Test
+
+on: [push, pull_request]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # The archive is what users install, so the license and the attribution
+      # for the rules derived from no-ai-slop travel inside it.
+      - run: cp LICENSE NOTICE Voices/
+      - run: zip -r Voices.zip Voices -x "*.DS_Store"
+
+      - name: Upload style to release
+        uses: svenstaro/upload-release-action@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: Voices.zip
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # A rule that matches nothing loads cleanly, so the fixtures are the only
+      # thing standing between a typo and a silently dead voice.
+      - name: Install Vale
+        run: |
+          wget -q https://github.com/vale-cli/vale/releases/download/v${VALE}/vale_${VALE}_Linux_64-bit.tar.gz
+          mkdir -p bin && tar -xzf vale_${VALE}_Linux_64-bit.tar.gz -C bin
+          echo "$PWD/bin" >> $GITHUB_PATH
+        env:
+          VALE: 3.19.0
+
+      - run: ./test.sh
+
+      # The briefs are generated from the rules, so a rule change that does not
+      # regenerate them ships an instruction that disagrees with the check.
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: script/brief/go.mod
+      - run: go run . -styles ../../Voices/styles -out ../../briefs
+        working-directory: script/brief
+      - run: git diff --exit-code briefs/

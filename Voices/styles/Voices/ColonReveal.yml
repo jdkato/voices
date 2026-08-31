@@ -1,0 +1,9 @@
+# Derived from no-ai-slop (https://github.com/petergyang/no-ai-slop),
+# Copyright (c) 2026 Peter Yang, licensed under the MIT License. See NOTICE.
+#
+extends: existence
+message: "Colon reveal: '%s'. Rewrite as a plain sentence."
+level: warning
+nonword: true
+tokens:
+  - '(?m)^[A-Z][\w\s]{2,40}: [a-z]'

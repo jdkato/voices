@@ -1,0 +1,55 @@
+doc.md:1:3:Simple.Vocabulary:'Understanding' is outside Basic English. Say it in shorter words.
+doc.md:1:26:Simple.Vocabulary:'Component' is outside Basic English. Say it in shorter words.
+doc.md:3:1:Simple.Vocabulary:'Here's' is outside Basic English. Say it in shorter words.
+doc.md:3:1:Voices.ThroatClearing:Throat-clearing: 'Here's the thing'. Cut it and state the point.
+doc.md:3:24:Simple.Vocabulary:'worth' is outside Basic English. Say it in shorter words.
+doc.md:4:1:Simple.Vocabulary:'React' is outside Basic English. Say it in shorter words.
+doc.md:4:7:Simple.Vocabulary:'component' is outside Basic English. Say it in shorter words.
+doc.md:4:51:Simple.Vocabulary:'you're' is outside Basic English. Say it in shorter words.
+doc.md:5:1:Simple.Vocabulary:'creating' is outside Basic English. Say it in shorter words.
+doc.md:5:16:Simple.Vocabulary:'object' is outside Basic English. Say it in shorter words.
+doc.md:5:23:Simple.Vocabulary:'reference' is outside Basic English. Say it in shorter words.
+doc.md:5:41:Simple.Vocabulary:'render' is outside Basic English. Say it in shorter words.
+doc.md:5:48:Simple.Vocabulary:'cycle' is outside Basic English. Say it in shorter words.
+doc.md:6:7:Simple.Vocabulary:'breaks' is outside Basic English. Say it in shorter words.
+doc.md:6:14:Simple.Vocabulary:'React's' is outside Basic English. Say it in shorter words.
+doc.md:6:22:Simple.Vocabulary:'referential' is outside Basic English. Say it in shorter words.
+doc.md:6:34:Simple.Vocabulary:'equality' is outside Basic English. Say it in shorter words.
+doc.md:6:43:Simple.Vocabulary:'check' is outside Basic English. Say it in shorter words.
+doc.md:7:5:Simple.Vocabulary:'want' is outside Basic English. Say it in shorter words.
+doc.md:7:13:Simple.Vocabulary:'consider' is outside Basic English. Say it in shorter words.
+doc.md:7:22:Simple.Vocabulary:'memoization' is outside Basic English. Say it in shorter words.
+doc.md:9:6:Voices.BinaryContrast:Binary contrast: 'is not just a performance problem, it's'. State the second half directly.
+doc.md:9:13:Simple.Vocabulary:'just' is outside Basic English. Say it in shorter words.
+doc.md:9:20:Simple.Vocabulary:'performance' is outside Basic English. Say it in shorter words.
+doc.md:9:32:Simple.Vocabulary:'problem' is outside Basic English. Say it in shorter words.
+doc.md:10:1:Simple.Vocabulary:'correctness' is outside Basic English. Say it in shorter words.
+doc.md:10:13:Simple.Vocabulary:'problem' is outside Basic English. Say it in shorter words.
+doc.md:10:22:Simple.Vocabulary:'Furthermore' is outside Basic English. Say it in shorter words.
+doc.md:10:35:Voices.Weasel:Weasel attribution: 'experts agree'. Name the source or cut the claim.
+doc.md:10:43:Simple.Vocabulary:'agree' is outside Basic English. Say it in shorter words.
+doc.md:11:1:Voices.Banned:Inflated word: 'robust'. Say the plain thing.
+doc.md:11:1:Simple.Vocabulary:'robust' is outside Basic English. Say it in shorter words.
+doc.md:11:8:Simple.Vocabulary:'approach' is outside Basic English. Say it in shorter words.
+doc.md:11:25:Simple.Vocabulary:'paradigm' is outside Basic English. Say it in shorter words.
+doc.md:11:25:Voices.Banned:Inflated word: 'paradigm shift'. Say the plain thing.
+doc.md:11:34:Simple.Vocabulary:'shift' is outside Basic English. Say it in shorter words.
+doc.md:11:45:Simple.Vocabulary:'empower' is outside Basic English. Say it in shorter words.
+doc.md:11:45:Voices.Banned:Inflated word: 'empower'. Say the plain thing.
+doc.md:12:1:Simple.Vocabulary:'team' is outside Basic English. Say it in shorter words.
+doc.md:12:9:Simple.Vocabulary:'streamline' is outside Basic English. Say it in shorter words.
+doc.md:12:9:Voices.Banned:Inflated word: 'streamline'. Say the plain thing.
+doc.md:12:46:Simple.Vocabulary:'render' is outside Basic English. Say it in shorter words.
+doc.md:13:1:Simple.Vocabulary:'path' is outside Basic English. Say it in shorter words.
+doc.md:13:5:Voices.SuperficialAnalysis:Superficial analysis: ', underscoring'. Say what it does for the reader.
+doc.md:13:7:Simple.Vocabulary:'underscoring' is outside Basic English. Say it in shorter words.
+doc.md:13:24:Simple.Vocabulary:'significance' is outside Basic English. Say it in shorter words.
+doc.md:15:1:Voices.Recap:Recap ending: 'In conclusion'. End on the last concrete point.
+doc.md:15:4:Simple.Vocabulary:'conclusion' is outside Basic English. Say it in shorter words.
+doc.md:15:20:Simple.Vocabulary:'team' is outside Basic English. Say it in shorter words.
+doc.md:15:25:Voices.WeakVerbs:Weak verb phrase: use 'decided' instead of 'made a decision'.
+doc.md:15:44:Simple.Vocabulary:'leverage' is outside Basic English. Say it in shorter words.
+doc.md:15:44:Voices.Banned:Inflated word: 'leverage'. Say the plain thing.
+doc.md:16:1:Simple.Vocabulary:'several' is outside Basic English. Say it in shorter words.
+doc.md:16:9:Simple.Vocabulary:'caching' is outside Basic English. Say it in shorter words.
+doc.md:16:17:Simple.Vocabulary:'solutions' is outside Basic English. Say it in shorter words.

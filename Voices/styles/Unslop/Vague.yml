@@ -1,0 +1,13 @@
+extends: existence
+message: "Vague noun: '%s'. Name the thing."
+level: warning
+ignorecase: true
+tokens:
+  - '(?:a )?(?:number|variety|range) of'
+  - various
+  - several
+  - certain aspects
+  - key elements
+  - stuff
+  - things
+  - solutions

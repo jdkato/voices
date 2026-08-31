@@ -1,0 +1,5 @@
+extends: capitalization
+message: "'%s' should be sentence-cased."
+level: error
+scope: heading
+match: $sentence

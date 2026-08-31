@@ -1,0 +1,12 @@
+# The shared core already replaces "made a decision" and "has the ability to";
+# these are the ones it has no single-word swap for.
+extends: existence
+message: "Nominalization: '%s'. Use the verb."
+level: error
+ignorecase: true
+tokens:
+  - 'provide(?:s|d)? support for'
+  - 'perform(?:s|ed)? an analysis'
+  - 'give(?:s|n)? consideration to'
+  - 'conduct(?:s|ed)? an investigation'
+  - 'reach(?:es|ed)? a conclusion'
