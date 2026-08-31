@@ -1,11 +1,11 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset=".github/assets/hero-dark.svg">
-  <img alt="Voices: the output-style catalog, as a linter. A hedged draft with seventeen flagged spans on the left, the clean rewrite on the right." src=".github/assets/hero-light.svg" width="1000">
+  <img alt="Voices, the output-style catalog as a linter. A hedged draft with seventeen flagged spans on the left, the clean rewrite on the right." src=".github/assets/hero-light.svg" width="1000">
 </picture>
 
 Six writing voices from the [output-style catalog][catalog], written as
-[Vale][vale] rules instead of prompts: checked exhaustively, reported with the
-exact span and the fix, and costing nothing until the prose breaks one.
+[Vale][vale] rules instead of prompts. Same constraints, checked exhaustively,
+reported with the exact span — and costing nothing until the prose breaks one.
 
 [catalog]: https://github.com/smixs/awesome-claude-output-styles#the-styles
 [vale]: https://vale.sh
@@ -21,36 +21,10 @@ BasedOnStyles = Voices, Direct
 $ vale sync
 ```
 
-Then [wire it into Claude Code](#getting-started), or run it anywhere else you
-already run a linter.
-
----
-
-Everybody writing a house style for an agent writes it as a prompt. Thirty
-banned words and a dozen patterns, loaded into context every session, applied
-from memory, and verified by the same model that wrote the draft.
-
-It is the same trade [Swizec ran on code review][swizec]: a reviewer that
-reads everything, costs tokens per run, and is pedantic in ways nobody asked
-for — replaced by a linter that answers in milliseconds, gives the same answer
-every time, and runs in a hook so the agent fixes its own output before anyone
-sees it.
-
-[swizec]: https://swizec.com/blog/stop-burning-tokens-on-code-review
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/loop-dark.svg">
-  <img alt="The agent writes a draft, Vale checks it, the agent applies the fix, and a clean run ends the loop." src=".github/assets/loop-light.svg" width="640">
-</picture>
-
-Vale reads stdin and sets an exit code, so nothing else is involved. No
-server, no MCP, no API key.
-
 ## One draft, six voices
 
-The same hedged paragraph, checked against each voice and then rewritten
-until Vale returned zero. Every rewrite below is a file in
-[`fixtures/after/`](fixtures/after); CI fails if any of them stops coming
+Each rewrite below is a file in [`fixtures/after/`](fixtures/after), produced
+by running the loop until Vale returned zero. CI fails if one stops coming
 back clean.
 
 <table>
@@ -99,8 +73,6 @@ on. If it never changes, move it out of the component.
 </tr>
 </table>
 
-Seventeen alerts stood between the two:
-
 ```console
 $ vale draft.md
  draft.md
@@ -125,21 +97,17 @@ $ vale draft.md
 ✖ 17 errors, 0 warnings and 0 suggestions in 1 file.
 ```
 
-Every one carries a line, a column, and the span. `Voices.WeakVerbs` carries
-the replacement text as well, so an agent can apply it without thinking about
-it.
-
-Three of the others are worth opening, because each one is a constraint a
-prompt states and a model then has to hold in its head.
+`Voices.WeakVerbs` carries the replacement in its payload, so an agent applies
+that one without thinking about it.
 
 <details>
 <summary><b>Simple</b> — only the 850 words of Basic English</summary>
 
 <br>
 
-C. K. Ogden's 1930 vocabulary, expanded to the regular inflections the system
-allows and shipped as a Hunspell dictionary. The heading had to go too:
-*understanding* and *component* are not on the list.
+C. K. Ogden's 1930 vocabulary, expanded to its regular inflections and shipped
+as a Hunspell dictionary. Forty-four of the fifty-five alerts here are
+vocabulary; the heading had to go too.
 
 ```console
   1:3  'Understanding' is outside Basic English. Say it in shorter words.  Simple.Vocabulary
@@ -147,8 +115,7 @@ allows and shipped as a Hunspell dictionary. The heading had to go too:
   3:1  'Here's' is outside Basic English. Say it in shorter words.         Simple.Vocabulary
  3:24  'worth' is outside Basic English. Say it in shorter words.          Simple.Vocabulary
   4:1  'React' is outside Basic English. Say it in shorter words.          Simple.Vocabulary
-  4:7  'component' is outside Basic English. Say it in shorter words.      Simple.Vocabulary
-       ... 38 more
+       ... 39 more
 ```
 
 ```markdown
@@ -164,10 +131,6 @@ box every time. Then the system sees no change, and it
 does no work.
 ```
 
-Forty-four of the fifty-five alerts on this draft are vocabulary; the rest
-come from the shared core. A closed vocabulary is the constraint a model
-cannot hold and a lookup table gets exactly right.
-
 </details>
 
 <details>
@@ -175,9 +138,8 @@ cannot hold and a lookup table gets exactly right.
 
 <br>
 
-The source style asks the model to verify its own slang density by re-reading
-the draft and counting. Counting is the one thing a rule does exactly, and
-`min` makes the absence of a voice a violation too.
+The source style asks the model to check its own slang density by re-reading
+the draft and counting. `min` also makes an absent voice a violation.
 
 ```console
    1:1  No slang in this paragraph. This voice is not off.  GenZ.Presence
@@ -203,9 +165,8 @@ on. Stable reference, clean diff, massive W.
 
 <br>
 
-`occurrence` with `min: 1` is the only shape of rule that can require
-something be *present*, which is how a format becomes checkable rather than
-merely described.
+`occurrence` with `min: 1` is the only rule shape that can require something be
+*present*.
 
 ```console
    1:1  No 'Why it matters:' section. Say why the reader should care.  Brevity.WhyItMatters
@@ -232,328 +193,136 @@ on. If it never changes, move it out of the component.
 
 </details>
 
-`Plain` and `Unslop` are in the package too — reading grade and active voice,
-punctuation and heading case — and their fixtures are in the same place.
+## The voices
+
+`Voices` is the shared core and is always on. A voice adds only what makes it
+that voice.
+
+| Voice | From | Adds | License |
+| ----- | ---- | ---- | ------- |
+| [`Voices`](Voices/styles/Voices) | [`no-ai-slop`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/no-ai-slop.md) | Inflated words, binary contrasts, throat-clearing, puffery, weasel attribution, colon reveals, recap endings, weak verbs | [MIT](https://github.com/petergyang/no-ai-slop/blob/main/LICENSE) · Yang |
+| [`Direct`](Voices/styles/Direct) | [`no-slop`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/no-slop.md) | No hedging, no preamble, sentences under 25 words | [MIT](https://github.com/petergyang/no-ai-slop/blob/main/LICENSE) · Yang |
+| [`Plain`](Voices/styles/Plain) | [`plain-english`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/plain-english.md) | Grade 12, sentences under 35 words, no nominalizations or agentless passives | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
+| [`Unslop`](Voices/styles/Unslop) | [`unslop`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/unslop.md) | No em dashes, sentence-case headings, no vague nouns | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
+| [`Brevity`](Voices/styles/Brevity) | [`smart-brevity`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/smart-brevity.md) | Six-word headlines, a required "Why it matters:", sentences under 20 words | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
+| [`Simple`](Voices/styles/Simple) | [`thing-explainer`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/thing-explainer.md) | Only the 850 words of Basic English | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
+| [`GenZ`](Voices/styles/GenZ) | [`gen-z`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/gen-z.md), [`street`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/street.md) | One slang term a sentence, two a paragraph, at least one | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
+
+Only the first row contributed text; the rest were written from the constraint
+each entry describes. [`NOTICE`](NOTICE) has the full attribution.
+
+Voices can disagree. Smart Brevity's `Why it matters:` is the colon reveal the
+core forbids, so `Brevity` wants `Voices.ColonReveal = NO`. Vale surfaces the
+conflict and your config settles it; two contradictory lines in one prompt just
+produce whichever the model weighted higher.
 
 ## What a rule can take from a prompt
-
-An output style is three things wearing one coat.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset=".github/assets/split-dark.svg">
   <img alt="An output style splits into a persona that stays a prompt, constraints that become rules, and guardrails Vale gets for free." src=".github/assets/split-light.svg" width="640">
 </picture>
 
-**A persona.** *"Answer like the group chat's most technical member."* Nothing
-here touches it, and nothing should. Models are already good at voice; they
-have never once failed to sound like Yoda.
+- **Persona** — *"answer like the group chat's most technical member."* Left
+  alone. Models are good at voice.
+- **Constraints** — one slang term a sentence, six words in a headline, only
+  these 850 words. Stated in the prompt, then checked by the model re-reading
+  its own draft and counting.
+- **Guardrails** — *"slang never enters code, file paths or identifiers."* Vale
+  parses the markup, so the rules only ever see prose.
 
-**A set of constraints.** One slang term per sentence. Six words in a
-headline. Twelfth-grade reading level. Only these 850 words. The prompt states
-it and then asks the model to verify by re-reading its own draft and counting
-— which is the part it applies least reliably at the end of a long generation,
-and exactly what a linter is:
-
-```yaml
-extends: occurrence
-message: "%d slang terms in one sentence. Budget is one."
-level: error
-scope: sentence
-max: 1
-token: '\b(?:W|L|cooked|rizz|mid|no cap|based|delulu|cap)\b'
-```
-
-**Structural guardrails.** *"Code, commands, file paths and identifiers stay
-byte-for-byte exact; slang never enters them."* A prompt has to say this and
-hope. Vale never had the option — it parses the markup, and the rules only
-ever see prose. The guardrail is free.
-
-This package takes the second, leaves the first, and gets the third for
-nothing.
+The middle one is what this package takes.
 
 ## Tokens
 
 ```
 no-ai-slop SKILL.md, as loaded  2,418  ████████████████████████████████████████████████████████
-                                       every session, whether or not it applies
-
 briefs/Direct.md                  482  ███████████
-                                       every session, and only if you want priming
-
 alerts on the draft above         459  ███████████
-                                       only when something is wrong
-
 alerts on the rewrite               0
-                                       never
 ```
 
-Real BPE counts, not an estimate:
+The first is paid every session. The last two are paid when the prose breaks a
+rule, and not otherwise.
 
-```console
-$ python3 script/tokens/count.py --voice Direct
-tokenizer: o200k_base (tiktoken)
-```
+Real BPE counts from [`script/tokens/count.py`](script/tokens/count.py), using
+OpenAI's `o200k_base` because Anthropic publishes no offline tokenizer for
+Claude 3 and later. Pass `--backend anthropic` for Claude's own count. The
+prompt measured is no-ai-slop's `SKILL.md` at `b53e265`, cached in-repo.
 
-Anthropic publishes no offline tokenizer for Claude 3 and later, so the
-committed figures use OpenAI's `o200k_base`, which lands within a few percent
-on English prose. For Claude's own count, the same script asks the model:
-
-```console
-$ ANTHROPIC_API_KEY=... python3 script/tokens/count.py \
-    --backend anthropic --model claude-opus-5
-```
-
-The prompt measured is
-[`skills/no-ai-slop/SKILL.md`](https://github.com/petergyang/no-ai-slop/blob/b53e2659b986093f7c681d8b4e998715e90da2a2/skills/no-ai-slop/SKILL.md)
-at `b53e265`, cached in `script/tokens/` so an upstream edit cannot move the
-number quietly. The alert counts come from running Vale on
-[`fixtures/before.md`](fixtures/before.md) and
-[`fixtures/after/Direct.md`](fixtures/after/Direct.md).
-
-Every voice, same tokenizer:
-
-| Voice | Brief | Alerts on the draft | Alerts on the rewrite |
-| ----- | ----: | ------------------: | --------------------: |
-| `Direct` | 482 | 459 | 0 |
-| `Plain` | 488 | 352 | 0 |
-| `Unslop` | 502 | 462 | 0 |
-| `Brevity` | 483 | 392 | 0 |
-| `Simple` | 446 | 1,383 | 0 |
-| `GenZ` | 653 | 354 | 0 |
-
-## Where each voice comes from
-
-Each one is an entry in the [output-style catalog][catalog], rewritten as the
-constraint its description states.
-
-| Catalog style | Voice | Why | License |
-| ------------- | ----- | --- | ------- |
-| [`no-ai-slop`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/no-ai-slop.md), [`no-slop`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/no-slop.md) | [`Voices`](Voices/styles/Voices) + [`Direct`](Voices/styles/Direct) | Enumerated words and patterns | [MIT](https://github.com/petergyang/no-ai-slop/blob/main/LICENSE) · Peter Yang |
-| [`plain-english`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/plain-english.md) | [`Plain`](Voices/styles/Plain) | Length, reading grade, active voice | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Serge Shima |
-| [`unslop`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/unslop.md) | [`Unslop`](Voices/styles/Unslop) | Punctuation, heading case, concrete nouns | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Serge Shima |
-| [`smart-brevity`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/smart-brevity.md) | [`Brevity`](Voices/styles/Brevity) | A required section and two budgets | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Serge Shima |
-| [`thing-explainer`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/thing-explainer.md) | [`Simple`](Voices/styles/Simple) | A closed vocabulary | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Serge Shima |
-| [`gen-z`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/gen-z.md), [`street`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/street.md) | [`GenZ`](Voices/styles/GenZ) | The density budget, not the persona | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Serge Shima |
-
-Only the first row contributed text: the word list and most of the shared core
-are a translation of no-ai-slop's `SKILL.md` into check syntax. The rest were
-written from the constraint each entry describes. Both upstreams are MIT,
-every derived file names its source, and [`NOTICE`](NOTICE) carries the full
-attribution.
-
-The rest of the catalog is persona and structure — sustain one analogy, answer
-at three levels, sound like Yoda. Models are already good at that. A rule is
-no help there, and no help either on whether an argument holds or whether a
-hedge is honesty rather than vagueness.
-
-The claim is narrower: the enumerable part of a house style is most of what a
-prompt spends its tokens on, and the part a model applies least reliably at
-the end of a long draft.
-
-## How it composes
-
-`Voices` is the shared core and is always on. A voice adds only what makes it
-that voice, so you enable two styles rather than picking from a menu of
-near-duplicates.
-
-| Style | Adds |
-| ----- | ---- |
-| [`Voices`](Voices/styles/Voices) | Inflated words, binary contrasts, throat-clearing, puffery, weasel attribution, colon reveals, recap endings, weak verb phrases |
-| [`Direct`](Voices/styles/Direct) | No hedging, no preamble, sentences under 25 words |
-| [`Plain`](Voices/styles/Plain) | Twelfth-grade reading level, sentences under 35 words, verbs rather than nominalizations, no agentless passives |
-| [`Unslop`](Voices/styles/Unslop) | No em dashes, sentence-case headings, no vague nouns |
-| [`Brevity`](Voices/styles/Brevity) | Six-word headlines, a required "Why it matters:", sentences under 20 words |
-| [`Simple`](Voices/styles/Simple) | Only the 850 words of Basic English |
-| [`GenZ`](Voices/styles/GenZ) | One slang term a sentence, two a paragraph, at least one — and no corporate register |
-
-Voices can disagree. Smart Brevity's `Why it matters:` is, structurally, the
-colon reveal the shared core forbids, so `Brevity` wants this in your config:
-
-```ini
-[*.md]
-BasedOnStyles = Voices, Brevity
-Voices.ColonReveal = NO
-```
-
-Vale surfaces the conflict at check time and your config settles it, which is
-the part a prompt cannot do: two contradictory instructions in one context
-window just produce whichever the model weighted higher.
-
-## Briefs
-
-If you want to prime the model as well as check it, [`briefs/`](briefs) holds
-one file per voice.
-
-```console
-$ cat briefs/Brevity.md
-...
-## Brevity
-
-- **Headline** — at most 6 words per heading
-- **Length** — at most 20 words per sentence
-- **WhyItMatters** — at least one `Why it matters:` per document
-```
-
-They are generated from the rules, not written beside them:
-
-```console
-$ go run ./script/brief -styles Voices/styles -out briefs
-```
-
-(The diagrams on this page are generated too, light and dark from one
-definition: `python3 script/assets/diagrams.py`.)
-
-CI regenerates them and fails on a diff. That is the whole point of deriving
-them: a skill carries its constraints twice, once as instructions the model
-reads and once as the judgment it is asked to apply, and the two drift the
-moment a rule changes. Here the check is the source and the instruction is a
-build artifact.
-
-The brief is optional in a way a prompt is not.
+| | `Direct` | `Plain` | `Unslop` | `Brevity` | `Simple` | `GenZ` |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Brief | 482 | 488 | 502 | 483 | 446 | 653 |
+| Alerts on the draft | 459 | 352 | 462 | 392 | 1,383 | 354 |
 
 ## Getting started
 
-### 1. Install Vale and the package
+**1. Install.** Vale is a single binary — [installation](https://vale.sh/docs/install).
+Add the `.vale.ini` above, then `vale sync`. That works on its own, in an editor
+or in CI.
 
-Vale is a single binary — [installation](https://vale.sh/docs/install). Then
-put this in `.vale.ini` at the root of your repository and sync:
-
-```ini
-Packages = https://github.com/jdkato/voices/releases/latest/download/Voices.zip
-
-[*.md]
-BasedOnStyles = Voices, Direct
-```
-
-```console
-$ vale sync
-$ vale README.md
-```
-
-That already works on its own — in an editor, in CI, in a pre-commit hook.
-Everything below is about handing the same output to an agent.
-
-### 2. Wire it into Claude Code
-
-The [Vale agent tools](https://github.com/vale-cli/agent-tools) plugin carries
-a `PostToolUse` hook. Type both as slash commands; the second restarts the
-session so the hook registers:
+**2. Wire it into Claude Code.** The [Vale agent tools](https://github.com/vale-cli/agent-tools)
+plugin carries a `PostToolUse` hook:
 
 ```
 /plugin marketplace add vale-cli/agent-tools
 /plugin install vale@agent-tools
 ```
 
-You need `vale` and `jq` on your `PATH`. From then on, every time Claude writes
-or edits a prose file, that one file is linted and any alerts go straight back
-into the same turn — no prompt, no tokens on a clean run, and nothing for you
-to remember.
+Every prose file Claude writes gets linted, and the alerts go back into the
+same turn. Needs `vale` and `jq` on `PATH`. It fires on Claude's edits, not
+yours.
 
-The hook fires on **Claude's** edits, not yours. Editing a file in your own
-editor does nothing.
-
-### 3. Know which alerts reach the model
-
-The hook relays **error-level alerts only**. Warnings and suggestions are
-advisory by the project's own choice, and pushing them into every turn is how
-people end up switching a linter off.
-
-That matters here, because some voices are deliberately advisory. `Simple` is
-one:
+**3. Check which alerts reach the model.** The hook relays **errors** only, and
+some voices are deliberately advisory:
 
 ```console
 $ vale --output=JSON draft.md | jq '[.[][].Severity] | group_by(.) | map({(.[0]): length}) | add'
 { "error": 11, "warning": 44 }
 ```
 
-Forty-four of those never reach the model. If you want a voice enforced rather
-than suggested, raise it in your own config — Vale takes a level per rule:
+Those 44 never arrive. Raise a rule if you want it enforced — `Simple.Vocabulary = error`
+gives `{ "error": 55 }`. The same syntax switches one off: `Voices.ColonReveal = NO`.
 
-```ini
-[*.md]
-BasedOnStyles = Voices, Simple
-Simple.Vocabulary = error
-```
+**4. Optionally, prime it too.** `cat briefs/Direct.md >> CLAUDE.md`. The briefs
+are generated from the rules (`go run ./script/brief`), and CI fails on a diff,
+so the instruction cannot drift from the check.
 
-```console
-{ "error": 55 }
-```
-
-The same line switches one off: `Voices.ColonReveal = NO`.
-
-### 4. Optionally, prime the model too
-
-The hook corrects after the fact. If you would rather the first draft come out
-closer, paste the [brief](briefs) for your voice into `CLAUDE.md`:
-
-```console
-$ cat briefs/Direct.md >> CLAUDE.md
-```
-
-That is ~480 tokens a session against a prompt-based style's ~2,400, and it is
-optional in a way a prompt is not — the rules are enforced whether or not the
-model ever read it.
-
-### Without Claude Code
-
-Vale reads stdin and sets an exit code, so any agent loop can drive it:
+Outside Claude Code, Vale reads stdin and sets an exit code:
 
 ```console
 $ vale --ext=.md --output=JSON < draft.md
-```
-
-Write, check, fix what came back, check again, stop at exit 0. `substitution`
-rules carry the replacement in the payload, so some fixes need no model at all.
-
-For the same feedback before a commit rather than during a turn:
-
-```yaml
-# .pre-commit-config.yaml
-repos:
-  - repo: https://github.com/vale-cli/vale
-    rev: v3.19.0
-    hooks:
-      - id: vale
 ```
 
 ## Tests
 
 ```console
 $ ./test.sh        # every voice, before and after
-$ ./test.sh -u     # rewrite the golden files after an intended change
+$ ./test.sh -u     # rewrite the golden files
 ```
 
-One draft, [`fixtures/before.md`](fixtures/before.md), is checked against each
-voice and the alerts compared to a golden file. Then the rewrite in
-`fixtures/after/<voice>.md` is checked the same way and required to produce
+[`fixtures/before.md`](fixtures/before.md) is checked against each voice and
+compared to a golden file; then each rewrite is checked and required to produce
 nothing.
 
-The second half is the load-bearing one. A Vale rule that matches nothing
-fails silently: it loads, runs, and reports success. Three rules in this
-package were dead on arrival — a `raw:` list concatenates its entries rather
-than alternating them, `metric` has no readability formulas, and a token list
-written in the infinitive never matches the past tense. A paired fixture is
-what tells "no violations" apart from "no rule".
+The second half matters because a Vale rule that matches nothing fails
+silently. Three rules here were dead on arrival. A `raw:` list concatenates
+rather than alternates. `metric` has no readability formulas. A token list
+written in the infinitive never matches the past tense.
 
 ## Credit
 
-The word list and most of the patterns in the shared core are a translation of
-[no-ai-slop](https://github.com/petergyang/no-ai-slop) by Peter Yang, MIT
-licensed, from prose a model reads into rules a linter runs. Each derived file
-names its source, and [`NOTICE`](NOTICE) carries the full attribution.
+The core's word list and patterns are a translation of
+[no-ai-slop](https://github.com/petergyang/no-ai-slop) by Peter Yang, MIT. That
+project keeps the half this cannot express: what to preserve, when a hedge is
+honest, how much to change.
 
-That project keeps the half this one cannot express: what to preserve in a
-draft, when a hedge is honest, how much to change.
-
-The voices are shaped after
+The voices follow
 [awesome-claude-output-styles](https://github.com/smixs/awesome-claude-output-styles)
-by Serge Shima, also MIT. Each one was written from the constraint its entry
-describes rather than from its text.
+by Serge Shima, also MIT. `Simple` uses Basic English, C. K. Ogden, 1930.
 
-`Simple` checks against Basic English, C. K. Ogden's 850-word vocabulary from
-1930.
+Diagrams: `python3 script/assets/diagrams.py`.
 
 ## License
 
-MIT. The license and `NOTICE` ship inside the archive as well, for anyone
-repackaging it.
+MIT. The license and `NOTICE` ship inside the archive too.
