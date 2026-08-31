@@ -1,3 +1,12 @@
+# `capitalization` decides sentence case by proportion: if fewer than 80% of a
+# heading's words are lowercase, it reads as title case. A short heading full of
+# proper nouns therefore trips it -- "Install with GitHub Actions" is correctly
+# cased and still fails, because two of its four words are capitalized.
+#
+# The fix is a vocabulary. Terms in an active one are exempt (`vocab` defaults
+# to true), so declare your product and tool names and the rule stops guessing:
+#
+#     Vocab = Project     # <StylesPath>/config/vocabularies/Project/accept.txt
 extends: capitalization
 message: "'%s' should be sentence-cased."
 level: error

@@ -213,6 +213,14 @@ that voice.
 Only the first row contributed text; the rest were written from the constraint
 each entry describes. [`NOTICE`](NOTICE) has the full attribution.
 
+`Unslop` needs your proper nouns in a vocabulary. It decides sentence case by
+proportion, so a short heading like "Install with GitHub Actions" is correctly
+cased and still fails. Declaring the terms stops it guessing:
+
+```ini
+Vocab = Project   # styles/config/vocabularies/Project/accept.txt
+```
+
 Voices can disagree. Smart Brevity's `Why it matters:` is the colon reveal the
 core forbids, so `Brevity` wants `Voices.ColonReveal = NO`. Vale surfaces the
 conflict and your config settles it; two contradictory lines in one prompt just
