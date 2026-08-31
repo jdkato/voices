@@ -29,11 +29,14 @@ jobs:
 
       # A rule that matches nothing loads cleanly, so the fixtures are the only
       # thing standing between a typo and a silently dead voice.
+      # Unpacked outside the checkout. `vale .` below lints the working tree,
+      # and the archive carries a README of its own.
       - name: Install Vale
         run: |
+          cd "$RUNNER_TEMP"
           wget -q https://github.com/vale-cli/vale/releases/download/v${VALE}/vale_${VALE}_Linux_64-bit.tar.gz
-          mkdir -p bin && tar -xzf vale_${VALE}_Linux_64-bit.tar.gz -C bin
-          echo "$PWD/bin" >> $GITHUB_PATH
+          mkdir -p vale && tar -xzf vale_${VALE}_Linux_64-bit.tar.gz -C vale
+          echo "$RUNNER_TEMP/vale" >> $GITHUB_PATH
         env:
           VALE: 3.19.0
 
