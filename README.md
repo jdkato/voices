@@ -1,9 +1,11 @@
-# Voices
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/hero-dark.svg">
+  <img alt="Voices: the output-style catalog, as a linter. A hedged draft with seventeen flagged spans on the left, the clean rewrite on the right." src=".github/assets/hero-light.svg" width="1000">
+</picture>
 
-**The [output-style catalog][catalog] as a linter.** Six writing voices,
-written as [Vale][vale] rules instead of prompts: checked exhaustively,
-reported with the exact span and the fix, and costing nothing until the prose
-breaks one.
+Six writing voices from the [output-style catalog][catalog], written as
+[Vale][vale] rules instead of prompts: checked exhaustively, reported with the
+exact span and the fix, and costing nothing until the prose breaks one.
 
 [catalog]: https://github.com/smixs/awesome-claude-output-styles#the-styles
 [vale]: https://vale.sh
@@ -18,6 +20,9 @@ BasedOnStyles = Voices, Direct
 ```console
 $ vale sync
 ```
+
+Then [wire it into Claude Code](#getting-started), or run it anywhere else you
+already run a linter.
 
 ---
 
@@ -395,6 +400,9 @@ They are generated from the rules, not written beside them:
 $ go run ./script/brief -styles Voices/styles -out briefs
 ```
 
+(The diagrams on this page are generated too, light and dark from one
+definition: `python3 script/assets/diagrams.py`.)
+
 CI regenerates them and fails on a diff. That is the whole point of deriving
 them: a skill carries its constraints twice, once as instructions the model
 reads and once as the judgment it is asked to apply, and the two drift the
@@ -403,11 +411,101 @@ build artifact.
 
 The brief is optional in a way a prompt is not.
 
-## In a hook
+## Getting started
 
-The loop is worth more before the commit than after it, for the same reason
-Swizec's linters are: the agent gets the feedback while it still owns the
-draft.
+### 1. Install Vale and the package
+
+Vale is a single binary — [installation](https://vale.sh/docs/install). Then
+put this in `.vale.ini` at the root of your repository and sync:
+
+```ini
+Packages = https://github.com/jdkato/voices/releases/latest/download/Voices.zip
+
+[*.md]
+BasedOnStyles = Voices, Direct
+```
+
+```console
+$ vale sync
+$ vale README.md
+```
+
+That already works on its own — in an editor, in CI, in a pre-commit hook.
+Everything below is about handing the same output to an agent.
+
+### 2. Wire it into Claude Code
+
+The [Vale agent tools](https://github.com/vale-cli/agent-tools) plugin carries
+a `PostToolUse` hook. Type both as slash commands; the second restarts the
+session so the hook registers:
+
+```
+/plugin marketplace add vale-cli/agent-tools
+/plugin install vale@agent-tools
+```
+
+You need `vale` and `jq` on your `PATH`. From then on, every time Claude writes
+or edits a prose file, that one file is linted and any alerts go straight back
+into the same turn — no prompt, no tokens on a clean run, and nothing for you
+to remember.
+
+The hook fires on **Claude's** edits, not yours. Editing a file in your own
+editor does nothing.
+
+### 3. Know which alerts reach the model
+
+The hook relays **error-level alerts only**. Warnings and suggestions are
+advisory by the project's own choice, and pushing them into every turn is how
+people end up switching a linter off.
+
+That matters here, because some voices are deliberately advisory. `Simple` is
+one:
+
+```console
+$ vale --output=JSON draft.md | jq '[.[][].Severity] | group_by(.) | map({(.[0]): length}) | add'
+{ "error": 11, "warning": 44 }
+```
+
+Forty-four of those never reach the model. If you want a voice enforced rather
+than suggested, raise it in your own config — Vale takes a level per rule:
+
+```ini
+[*.md]
+BasedOnStyles = Voices, Simple
+Simple.Vocabulary = error
+```
+
+```console
+{ "error": 55 }
+```
+
+The same line switches one off: `Voices.ColonReveal = NO`.
+
+### 4. Optionally, prime the model too
+
+The hook corrects after the fact. If you would rather the first draft come out
+closer, paste the [brief](briefs) for your voice into `CLAUDE.md`:
+
+```console
+$ cat briefs/Direct.md >> CLAUDE.md
+```
+
+That is ~480 tokens a session against a prompt-based style's ~2,400, and it is
+optional in a way a prompt is not — the rules are enforced whether or not the
+model ever read it.
+
+### Without Claude Code
+
+Vale reads stdin and sets an exit code, so any agent loop can drive it:
+
+```console
+$ vale --ext=.md --output=JSON < draft.md
+```
+
+Write, check, fix what came back, check again, stop at exit 0. `substitution`
+rules carry the replacement in the payload, so some fixes need no model at all.
+
+For the same feedback before a commit rather than during a turn:
 
 ```yaml
 # .pre-commit-config.yaml
@@ -417,15 +515,6 @@ repos:
     hooks:
       - id: vale
 ```
-
-Or straight into whatever is generating the prose:
-
-```console
-$ vale --ext=.md --output=JSON < draft.md
-```
-
-`substitution` rules carry the replacement in the payload, so some of the
-fixes need no model at all.
 
 ## Tests
 
