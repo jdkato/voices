@@ -1,13 +1,13 @@
-# Voices
+# Voices: AI output styles powered by Vale
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset=".github/assets/hero-dark.svg">
   <img alt="A hedged draft with seventeen flagged spans on the left, the clean rewrite on the right." src=".github/assets/hero-light.svg" width="1000">
 </picture>
 
-Six writing voices from the [output-style catalog][catalog], written as
-[Vale][vale] rules instead of prompts. Same constraints, checked exhaustively,
-reported with the exact span — and costing nothing until the prose breaks one.
+Six voices from the [output-style catalog][catalog], written as [Vale][vale]
+rules instead of prompts. Same constraints, checked exhaustively, reported with
+the exact span — and costing nothing until the prose breaks one.
 
 [catalog]: https://github.com/smixs/awesome-claude-output-styles#the-styles
 [vale]: https://vale.sh
