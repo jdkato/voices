@@ -39,6 +39,10 @@ jobs:
 
       - run: ./test.sh
 
+      # The package on its own prose. A voice that cannot pass itself is a poor
+      # advertisement, and .vale.ini here is the config the README hands out.
+      - run: vale .
+
       # The briefs are generated from the rules, so a rule change that does not
       # regenerate them ships an instruction that disagrees with the check.
       - uses: actions/setup-go@v5

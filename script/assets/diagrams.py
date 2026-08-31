@@ -60,15 +60,10 @@ def squiggle(x, y, width, color):
 
 def hero(t):
     """The product in one image: a draft, what the rules caught, the rewrite."""
-    s = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 320" '
-         f'width="1000" height="320">',
+    s = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 234" '
+         f'width="1000" height="234">',
          f'<defs><marker id="h" markerWidth="9" markerHeight="9" refX="8" refY="4" '
          f'orient="auto"><path d="M0 0 L9 4 L0 8 z" fill="{t["limeline"]}"/></marker></defs>']
-
-    s.append(f'<text x="0" y="30" font-family="{MONO}" font-size="26" font-weight="600" '
-             f'fill="{t["fg"]}">Voices</text>')
-    s.append(f'<text x="0" y="54" font-family="{SANS}" font-size="14" '
-             f'fill="{t["muted"]}">The output-style catalog, as a linter.</text>')
 
     draft = [
         ("Here's the thing: it's worth noting", [(0, 16), (18, 17)]),
@@ -76,23 +71,23 @@ def hero(t):
         ("re-rendering is likely because you", [(19, 15)]),
         ("may want to consider memoization.", [(0, 20)]),
     ]
-    s.append(f'<rect x="0" y="86" width="410" height="200" rx="10" fill="{t["card"]}" '
+    s.append(f'<rect x="0" y="0" width="410" height="200" rx="10" fill="{t["card"]}" '
              f'stroke="{t["border"]}" stroke-width="1"/>')
-    s.append(f'<text x="20" y="112" font-family="{MONO}" font-size="11" '
+    s.append(f'<text x="20" y="26" font-family="{MONO}" font-size="11" '
              f'fill="{t["muted"]}">draft</text>')
-    s.append(f'<text x="390" y="112" text-anchor="end" font-family="{MONO}" '
+    s.append(f'<text x="390" y="26" text-anchor="end" font-family="{MONO}" '
              f'font-size="11" fill="{t["flag"]}">17 alerts &#183; exit 1</text>')
     for i, (line, spans) in enumerate(draft):
-        y = 145 + i * 30
+        y = 59 + i * 30
         s.append(f'<text x="20" y="{y}" font-family="{MONO}" font-size="13" '
                  f'textLength="{len(line) * CH:.1f}" lengthAdjust="spacingAndGlyphs" '
                  f'fill="{t["fg"]}">{esc(line)}</text>')
         for start, length in spans:
             s.append(squiggle(20 + start * CH, y + 6, length * CH, t["flag"]))
 
-    s.append(f'<line x1="440" y1="186" x2="530" y2="186" stroke="{t["limeline"]}" '
+    s.append(f'<line x1="440" y1="100" x2="530" y2="100" stroke="{t["limeline"]}" '
              f'stroke-width="1.5" marker-end="url(#h)"/>')
-    s.append(f'<text x="485" y="176" text-anchor="middle" font-family="{MONO}" '
+    s.append(f'<text x="485" y="90" text-anchor="middle" font-family="{MONO}" '
              f'font-size="11" fill="{t["muted"]}">vale</text>')
 
     rewrite = [
@@ -101,21 +96,21 @@ def hero(t):
         "render. React compares props by",
         "reference, so the memo check fails.",
     ]
-    s.append(f'<rect x="560" y="86" width="440" height="200" rx="10" '
+    s.append(f'<rect x="560" y="0" width="440" height="200" rx="10" '
              f'fill="{t["card"]}" stroke="{t["limeline"]}" stroke-width="1"/>')
-    s.append(f'<text x="580" y="112" font-family="{MONO}" font-size="11" '
+    s.append(f'<text x="580" y="26" font-family="{MONO}" font-size="11" '
              f'fill="{t["muted"]}">rewrite</text>')
-    s.append(f'<text x="980" y="112" text-anchor="end" font-family="{MONO}" '
+    s.append(f'<text x="980" y="26" text-anchor="end" font-family="{MONO}" '
              f'font-size="11" fill="{t["lime"]}">clean &#183; exit 0</text>')
     for i, line in enumerate(rewrite):
-        s.append(f'<text x="580" y="{145 + i * 30}" font-family="{MONO}" font-size="13" '
+        s.append(f'<text x="580" y="{59 + i * 30}" font-family="{MONO}" font-size="13" '
                  f'textLength="{len(line) * CH:.1f}" lengthAdjust="spacingAndGlyphs" '
                  f'fill="{t["fg"]}">{esc(line)}</text>')
 
     voices = ["Direct", "Plain", "Unslop", "Brevity", "Simple", "GenZ"]
     x = 0
     for name in voices:
-        s.append(f'<text x="{x}" y="312" font-family="{MONO}" font-size="12" '
+        s.append(f'<text x="{x}" y="226" font-family="{MONO}" font-size="12" '
                  f'fill="{t["muted"]}">{name}</text>')
         x += len(name) * 7.4 + 24
     s.append('</svg>')

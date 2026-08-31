@@ -1,6 +1,8 @@
+# Voices
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset=".github/assets/hero-dark.svg">
-  <img alt="Voices, the output-style catalog as a linter. A hedged draft with seventeen flagged spans on the left, the clean rewrite on the right." src=".github/assets/hero-light.svg" width="1000">
+  <img alt="A hedged draft with seventeen flagged spans on the left, the clean rewrite on the right." src=".github/assets/hero-light.svg" width="1000">
 </picture>
 
 Six writing voices from the [output-style catalog][catalog], written as
@@ -273,16 +275,18 @@ Every prose file Claude writes gets linted, and the alerts go back into the
 same turn. Needs `vale` and `jq` on `PATH`. It fires on Claude's edits, not
 yours.
 
-**3. Check which alerts reach the model.** The hook relays **errors** only, and
-some voices are deliberately advisory:
+**3. Check which alerts reach the model.** The hook relays **errors** only by
+default, and some voices are deliberately advisory:
 
 ```console
 $ vale --output=JSON draft.md | jq '[.[][].Severity] | group_by(.) | map({(.[0]): length}) | add'
 { "error": 11, "warning": 44 }
 ```
 
-Those 44 never arrive. Raise a rule if you want it enforced — `Simple.Vocabulary = error`
-gives `{ "error": 55 }`. The same syntax switches one off: `Voices.ColonReveal = NO`.
+Those 44 never arrive. Either widen the hook — `/plugin`, then set its alert
+level to `warning` — or raise the rule so it is an error everywhere:
+`Simple.Vocabulary = error` gives `{ "error": 55 }`. The same syntax switches
+one off: `Voices.ColonReveal = NO`.
 
 **4. Optionally, prime it too.** `cat briefs/Direct.md >> CLAUDE.md`. The briefs
 are generated from the rules (`go run ./script/brief`), and CI fails on a diff,
@@ -305,7 +309,11 @@ $ ./test.sh -u     # rewrite the golden files
 compared to a golden file; then each rewrite is checked and required to produce
 nothing.
 
-The second half matters because a Vale rule that matches nothing fails
+CI also runs `vale .` over this repository, using the `.vale.ini` at the root
+— the same config the README hands out. The fixtures, the briefs, and the
+cached upstream prompt are excluded; everything else has to pass.
+
+The paired half matters because a Vale rule that matches nothing fails
 silently. Three rules here were dead on arrival. A `raw:` list concatenates
 rather than alternates. `metric` has no readability formulas. A token list
 written in the infinitive never matches the past tense.
