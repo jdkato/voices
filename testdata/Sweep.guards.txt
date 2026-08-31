@@ -1,0 +1,7 @@
+doc.md:3:13:Voices.Puffery:Importance puffery: 'marks a pivotal moment'. State the fact and let the reader judge.
+doc.md:7:1:Voices.ColonReveal:Colon reveal: 'Why it matters: a'. Rewrite as a plain sentence.
+doc.md:9:7:Voices.Puffery:Importance puffery: 'thrilled to announce'. State the fact and let the reader judge.
+doc.md:9:38:Voices.BinaryContrast:Binary contrast: 'isn't just a fix, it's'. State the second half directly.
+doc.md:10:13:Voices.InflatedWords:Inflated word: use 'using' instead of 'Leveraging'.
+doc.md:10:44:Voices.Banned:Inflated word: 'empowers'. Say the plain thing.
+doc.md:11:7:Voices.Puffery:Importance puffery: 'represents a pivotal moment'. State the fact and let the reader judge.

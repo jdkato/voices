@@ -1,0 +1,47 @@
+Vale Voices
+Copyright (c) 2026 Joseph Kato and contributors
+
+------------------------------------------------------------------------------
+no-ai-slop
+------------------------------------------------------------------------------
+
+This product includes rule definitions derived from no-ai-slop
+(https://github.com/petergyang/no-ai-slop), Copyright (c) 2026 Peter Yang,
+licensed under the MIT License.
+
+The word list split across Voices/Banned.yml and Voices/InflatedWords.yml, and
+the patterns in Voices/BinaryContrast.yml, Voices/ThroatClearing.yml,
+Voices/Puffery.yml, Voices/Weasel.yml, Voices/Recap.yml,
+Voices/SuperficialAnalysis.yml, Voices/ColonReveal.yml and
+Voices/WeakVerbs.yml were transcribed from that project's SKILL.md, which
+enumerates them as prose. The rules here are a translation of those lists into
+Vale's check syntax, and the replacements attached to the swappable half are
+this project's own. The judgment the skill also carries -- what to preserve,
+when a hedge is honest, how much to change -- is not reproducible as a rule and
+stays with the original.
+
+------------------------------------------------------------------------------
+awesome-claude-output-styles
+------------------------------------------------------------------------------
+
+This product includes voice definitions shaped after the output styles
+catalogued in awesome-claude-output-styles
+(https://github.com/smixs/awesome-claude-output-styles), Copyright (c) 2026
+Serge Shima, licensed under the MIT License.
+
+Direct, GenZ, Coach and Simple each take the constraint its entry
+describes -- a sentence budget, a slang budget, a required structure, a
+closed vocabulary -- and state it as a Vale rule. Where a voice enumerates
+vocabulary, the terms are in general use and were listed independently.
+
+------------------------------------------------------------------------------
+Basic English
+------------------------------------------------------------------------------
+
+Simple/Vocabulary.yml checks against the 850-word vocabulary of Basic English,
+devised by C. K. Ogden and published in 1930. The dictionary in
+Voices/styles/config/dictionaries/ is that list expanded to the regular
+inflections the system allows, plus the closed class of pronouns and
+determiners Ogden treats as grammar rather than vocabulary. A word list is not
+a copyrightable work; it is reproduced here as the specification of a
+constraint.

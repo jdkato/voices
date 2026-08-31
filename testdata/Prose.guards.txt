@@ -1,0 +1,1 @@
+doc.md:12:1:Voices.ColonReveal:Colon reveal: 'Ordering: t'. Rewrite as a plain sentence.
