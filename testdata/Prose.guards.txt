@@ -1,0 +1,6 @@
+doc.md:1:1:Brevity.WhyItMatters:No 'Why it matters:' section. Say why the reader should care.
+doc.md:5:13:Plain.Passive:Passive voice: 'been'. Use the active verb.
+doc.md:5:37:Plain.Passive:Passive voice: 'being'. Use the active verb.
+doc.md:5:63:Plain.Passive:Passive voice: 'was'. Use the active verb.
+doc.md:8:21:Plain.Passive:Passive voice: 'is'. Use the active verb.
+doc.md:12:1:Voices.ColonReveal:Colon reveal: 'Ordering: t'. Rewrite as a plain sentence.

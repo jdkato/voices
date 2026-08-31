@@ -1,9 +1,14 @@
 # The structure is the format: a Smart Brevity piece states the stakes under
 # its own label. `min: 1` over the whole file makes the missing section the
 # violation -- the only shape of rule that can require something be present.
+#
+# `scope: raw` is what makes the count file-wide, and it sees the file before
+# the markup is stripped. Anchoring to the start of a line keeps a mention
+# inside a fenced code block from satisfying the rule; the optional markers
+# allow a bolded or quoted label.
 extends: occurrence
 message: "No 'Why it matters:' section. Say why the reader should care."
 level: error
 scope: raw
 min: 1
-token: 'Why it matters:'
+token: '(?m)^[*_>\s]{0,4}Why it matters:'

@@ -6,8 +6,8 @@
 </picture>
 
 Six voices from the [output-style catalog][catalog], written as [Vale][vale]
-rules instead of prompts. Same constraints, checked exhaustively, reported with
-the exact span — and costing nothing until the prose breaks one.
+rules instead of prompts. The countable constraints checked exactly, every hit
+reported with its span — and costing nothing until the prose breaks one.
 
 [catalog]: https://github.com/smixs/awesome-claude-output-styles#the-styles
 [vale]: https://vale.sh
@@ -141,11 +141,13 @@ does no work.
 <br>
 
 The source style asks the model to check its own slang density by re-reading
-the draft and counting. `min` also makes an absent voice a violation.
+the draft and counting. `min` also makes an absent voice a violation. Vale
+reports the shortfall once per file, at 1:1, rather than at the paragraph that
+came up short.
 
 ```console
-   1:1  No slang in this paragraph. This voice is not off.  GenZ.Presence
- 10:22  Corporate register: 'Furthermore'. Not this voice.  GenZ.Register
+   1:1  A paragraph here has no slang. This voice is not off.  GenZ.Presence
+ 10:22  Corporate register: 'Furthermore'. Not this voice.      GenZ.Register
 ```
 
 ```markdown
@@ -204,7 +206,7 @@ that voice.
 | ----- | ---- | ---- | ------- |
 | [`Voices`](Voices/styles/Voices) | [`no-ai-slop`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/no-ai-slop.md) | Inflated words, binary contrasts, throat-clearing, puffery, weasel attribution, colon reveals, recap endings, weak verbs | [MIT](https://github.com/petergyang/no-ai-slop/blob/main/LICENSE) · Yang |
 | [`Direct`](Voices/styles/Direct) | [`no-slop`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/no-slop.md) | No hedging, no preamble, sentences under 25 words | [MIT](https://github.com/petergyang/no-ai-slop/blob/main/LICENSE) · Yang |
-| [`Plain`](Voices/styles/Plain) | [`plain-english`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/plain-english.md) | Grade 12, sentences under 35 words, no nominalizations or agentless passives | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
+| [`Plain`](Voices/styles/Plain) | [`plain-english`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/plain-english.md) | Grade 12, sentences under 35 words, no nominalizations or passive voice | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
 | [`Unslop`](Voices/styles/Unslop) | [`unslop`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/unslop.md) | No em dashes, sentence-case headings, no vague nouns | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
 | [`Brevity`](Voices/styles/Brevity) | [`smart-brevity`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/smart-brevity.md) | Six-word headlines, a required "Why it matters:", sentences under 20 words | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
 | [`Simple`](Voices/styles/Simple) | [`thing-explainer`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/thing-explainer.md) | Only the 850 words of Basic English | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
@@ -241,19 +243,33 @@ produce whichever the model weighted higher.
 - **Guardrails** — *"slang never enters code, file paths or identifiers."* Vale
   parses the markup, so the rules only ever see prose.
 
-The middle one is what this package takes.
+The middle one is what this package takes. It splits again once you write it
+out.
+
+A budget is **counted**, and counting is exact. A sentence runs to twenty words
+or it does not. A paragraph spends its slang or it does not. A word sits inside
+Ogden's 850 or outside them. No model holds those reliably across a long draft,
+and no rule fails at them.
+
+Taste is **enumerated** instead. `Banned`, `Weasel`, `Puffery` and
+`ThroatClearing` are lists. They catch the slop a model reaches for first and
+miss the synonym it reaches for next. Worth having, and a filter rather than a
+proof. The briefs mark which is which. A rule Vale can state as a phrase is
+listed in full, and one that stays a pattern is named and counted.
 
 ## Tokens
 
 ```
 no-ai-slop SKILL.md, as loaded  2,418  ████████████████████████████████████████████████████████
-briefs/Direct.md                  482  ███████████
+briefs/Direct.md                  577  █████████████
 alerts on the draft above         459  ███████████
 alerts on the rewrite               0
 ```
 
-The first is paid every session. The last two are paid when the prose breaks a
-rule, and not otherwise.
+The first is paid every session. So is the brief, if you take step 4 below and
+paste it into `CLAUDE.md`. That trade is 577 tokens against 2,418, for the part
+of the constraint a prompt can state. The alerts are the ones you pay only when
+the prose breaks a rule.
 
 Real BPE counts from [`script/tokens/count.py`](script/tokens/count.py), using
 OpenAI's `o200k_base` because Anthropic publishes no offline tokenizer for
@@ -262,8 +278,8 @@ prompt measured is no-ai-slop's `SKILL.md` at `b53e265`, cached in-repo.
 
 | | `Direct` | `Plain` | `Unslop` | `Brevity` | `Simple` | `GenZ` |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Brief | 482 | 488 | 502 | 483 | 446 | 653 |
-| Alerts on the draft | 459 | 352 | 462 | 392 | 1,383 | 354 |
+| Brief | 577 | 588 | 552 | 509 | 468 | 687 |
+| Alerts on the draft | 459 | 352 | 465 | 392 | 1,383 | 354 |
 
 ## Getting started
 
@@ -322,9 +338,18 @@ CI also runs `vale .` over this repository, using the `.vale.ini` at the root
 cached upstream prompt are excluded; everything else has to pass.
 
 The paired half matters because a Vale rule that matches nothing fails
-silently. Three rules here were dead on arrival. A `raw:` list concatenates
+silently. Four rules here were dead on arrival. A `raw:` list concatenates
 rather than alternates. `metric` has no readability formulas. A token list
-written in the infinitive never matches the past tense.
+written in the infinitive never matches the past tense. And `Plain.Passive`
+filtered on `VBD|VBZ|VBP`, which drops every perfect and progressive passive,
+because the tagger calls "been" a VBN and "being" a VBG.
+
+That last one passed the paired fixtures, because `before.md` holds no "has
+been fixed" to catch it. [`fixtures/guards/`](fixtures/guards) covers the other
+half: constructions each rule must leave alone, sitting next to the ones it must
+flag. "cloud-based" is not slang and "mid-size" is not `mid`, while "took the L"
+still counts. "Note:" is not a colon reveal and "Ordering:" still is. A guard
+that stops firing is a rule that widened while nobody watched.
 
 ## Credit
 

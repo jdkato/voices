@@ -145,30 +145,47 @@ func line(n named) string {
 
 	switch r.Extends {
 	case "existence":
-		if list := quoteAll(r.Tokens); list != "" {
-			return fmt.Sprintf("**%s** — never write: %s", n.name, list)
+		list, dropped := phrases(r.Tokens)
+		if list != "" {
+			return fmt.Sprintf("**%s** — never write: %s%s", n.name, list, note(dropped))
 		}
 		// Every token was a pattern rather than a phrase, so there is no list
 		// to hand over. The message is the instruction in that case: it is
 		// what the writer sees when the rule fires.
 		return fmt.Sprintf("**%s** — %s", n.name, plain(r.Message))
 	case "substitution":
-		pairs := make([]string, 0, len(r.Swap))
+		var pairs []string
+		dropped := 0
 		for from, to := range r.Swap {
-			pairs = append(pairs, fmt.Sprintf("%q → %q", from, to))
+			froms, ok := expand(from)
+			if !ok {
+				dropped++
+				continue
+			}
+			for _, f := range froms {
+				pairs = append(pairs, fmt.Sprintf("%q → %q", f, to))
+			}
 		}
 		sort.Strings(pairs)
-		return fmt.Sprintf("**%s** — replace: %s", n.name, strings.Join(pairs, "; "))
+		if len(pairs) == 0 {
+			return fmt.Sprintf("**%s** — %s", n.name, plain(r.Message))
+		}
+		return fmt.Sprintf("**%s** — replace: %s%s", n.name, strings.Join(pairs, "; "), note(dropped))
 	case "occurrence":
 		// `raw` is the whole file, which reads as "per document" rather than
 		// as the name of a scope.
 		if scope == "raw" {
 			scope = "document"
 		}
+		bound, count := "at most", r.Max
 		if r.Min > 0 {
-			return fmt.Sprintf("**%s** — at least %s per %s", n.name, countable(r.Token, r.Min), scope)
+			bound, count = "at least", r.Min
 		}
-		return fmt.Sprintf("**%s** — at most %s per %s", n.name, countable(r.Token, r.Max), scope)
+		desc, dropped, ok := countable(r.Token, count)
+		if !ok {
+			return fmt.Sprintf("**%s** — %s", n.name, plain(r.Message))
+		}
+		return fmt.Sprintf("**%s** — %s %s per %s%s", n.name, bound, desc, scope, note(dropped))
 	case "readability":
 		return fmt.Sprintf("**%s** — reading grade at or below %g", n.name, r.Grade)
 	case "capitalization":
@@ -181,47 +198,51 @@ func line(n named) string {
 }
 
 // countable turns an occurrence token back into something a reader can act
-// on: `\b\w+\b` is "words", and an alternation is the list it enumerates.
-func countable(token string, n int) string {
+// on: `\b\w+\b` is "words", and an alternation is the list it enumerates. It
+// reports how many branches stayed patterns, and refuses rather than printing
+// a regex, because a brief that says `(?m)^[*_>\s]{0,4}Why it matters:` has
+// stopped being an instruction.
+func countable(token string, n int) (string, int, bool) {
 	switch token {
 	case `\b\w+\b`, `\b[\w-]+\b`:
-		return fmt.Sprintf("%d words", n)
+		return fmt.Sprintf("%d words", n), 0, true
 	}
-	inner := token
-	inner = strings.TrimPrefix(inner, `\b`)
-	inner = strings.TrimSuffix(inner, `\b`)
-	inner = strings.TrimPrefix(inner, "(?:")
-	inner = strings.TrimSuffix(inner, ")")
-	if terms := alternates(inner); len(terms) > 1 {
-		return fmt.Sprintf("%d of (%s)", n, strings.Join(terms, ", "))
+	terms, dropped := branches(token)
+	if len(terms) == 0 {
+		return "", 0, false
 	}
-	if n == 1 {
-		return fmt.Sprintf("one `%s`", token)
+	if len(terms) == 1 && dropped == 0 {
+		if n == 1 {
+			return fmt.Sprintf("one %q", terms[0]), 0, true
+		}
+		return fmt.Sprintf("%d of %q", n, terms[0]), 0, true
 	}
-	return fmt.Sprintf("%d of `%s`", n, token)
+	return fmt.Sprintf("%d of (%s)", n, strings.Join(terms, ", ")), dropped, true
 }
 
-// quoteAll lists the tokens a reader could actually avoid writing. Patterns
-// are skipped: "\\b(?:is|are) not (?:just )?[\\w\\s]{1,30}?" is not an
-// instruction, and pretending otherwise is how a brief starts lying about
-// what the rule does.
-// alternates splits a top-level alternation into its members, ignoring the
-// bars inside nested groups: "based(?!\\s+(?:on|upon))" is one term, not
-// three. Lookarounds are dropped, since they disambiguate a term rather than
-// name one.
-func alternates(inner string) []string {
-	var terms []string
-	depth, start := 0, 0
-	flush := func(end int) {
-		term := inner[start:end]
-		if i := strings.Index(term, "(?"); i >= 0 {
-			term = term[:i]
+// branches splits a token at its top-level alternation and expands each side.
+// Anchors, word boundaries and lookarounds are stripped first: they say where a
+// term may sit, not which term it is.
+func branches(token string) ([]string, int) {
+	var out []string
+	dropped := 0
+	for _, b := range split(token) {
+		vs, ok := expand(strip(b))
+		if !ok {
+			dropped++
+			continue
 		}
-		if term = strings.TrimSpace(term); term != "" {
-			terms = append(terms, term)
-		}
+		out = append(out, vs...)
 	}
-	for i, c := range inner {
+	return out, dropped
+}
+
+// split cuts a pattern at the `|` characters outside any group.
+func split(pattern string) []string {
+	rs := []rune(pattern)
+	var out []string
+	depth, start := 0, 0
+	for i, c := range rs {
 		switch c {
 		case '(':
 			depth++
@@ -229,25 +250,192 @@ func alternates(inner string) []string {
 			depth--
 		case '|':
 			if depth == 0 {
-				flush(i)
+				out = append(out, string(rs[start:i]))
 				start = i + 1
 			}
 		}
 	}
-	flush(len(inner))
-	return terms
+	return append(out, string(rs[start:]))
 }
 
-func quoteAll(tokens []any) string {
-	var out []string
-	for _, t := range tokens {
-		s, ok := t.(string)
-		if !ok || strings.ContainsAny(s, `\\[]{}^$|`) || strings.Contains(s, "(?") {
+// strip removes the position markers from a branch: the `(?m)` flag, the `^`
+// and `$` anchors, `\b`, and any lookaround group with its contents.
+func strip(branch string) string {
+	for _, flag := range []string{"(?m)", "(?i)", "(?s)"} {
+		branch = strings.ReplaceAll(branch, flag, "")
+	}
+	rs := []rune(branch)
+	var b strings.Builder
+	for i := 0; i < len(rs); {
+		if rs[i] == '(' && i+2 < len(rs) && rs[i+1] == '?' &&
+			(rs[i+2] == '!' || rs[i+2] == '=' || rs[i+2] == '<') {
+			depth := 0
+			for ; i < len(rs); i++ {
+				if rs[i] == '(' {
+					depth++
+				} else if rs[i] == ')' {
+					if depth--; depth == 0 {
+						i++
+						break
+					}
+				}
+			}
 			continue
 		}
-		out = append(out, fmt.Sprintf("%q", s))
+		if rs[i] == '\\' && i+1 < len(rs) && rs[i+1] == 'b' {
+			i += 2
+			continue
+		}
+		if rs[i] == '^' || rs[i] == '$' {
+			i++
+			continue
+		}
+		b.WriteRune(rs[i])
+		i++
 	}
-	return strings.Join(out, ", ")
+	return b.String()
+}
+
+// quoteAll lists the tokens a reader could actually avoid writing. Patterns
+// are skipped: "\\b(?:is|are) not (?:just )?[\\w\\s]{1,30}?" is not an
+// instruction, and pretending otherwise is how a brief starts lying about
+// what the rule does.
+// phrases lists the tokens a reader could actually avoid writing, expanding
+// the ones that are alternations or optional groups rather than dropping them.
+// It also reports how many tokens it could not turn into a phrase, because a
+// brief that quietly enumerates half a rule is how the instruction and the
+// check drift apart again.
+func phrases(tokens []any) (string, int) {
+	var out []string
+	dropped := 0
+	for _, t := range tokens {
+		// `sequence` also uses `tokens`, but as a list of maps.
+		s, ok := t.(string)
+		if !ok {
+			dropped++
+			continue
+		}
+		vs, ok := expand(s)
+		if !ok {
+			dropped++
+			continue
+		}
+		for _, v := range vs {
+			out = append(out, fmt.Sprintf("%q", v))
+		}
+	}
+	return strings.Join(out, ", "), dropped
+}
+
+// note names what the list left out. Naming it is the point: the alternative
+// is a brief that reads as complete while the linter checks more.
+func note(dropped int) string {
+	switch dropped {
+	case 0:
+		return ""
+	case 1:
+		return " (plus 1 pattern `vale` checks)"
+	default:
+		return fmt.Sprintf(" (plus %d patterns `vale` checks)", dropped)
+	}
+}
+
+// maxVariants caps the expansion. A token that fans out further is a pattern
+// in practice, whatever its syntax, and belongs in the dropped count.
+const maxVariants = 12
+
+// expand turns a token into the literal phrases it matches. It handles the
+// two shapes these rules use -- an alternation inside `(?:...)` and a group
+// made optional with `?` -- and refuses everything else, so a character class
+// or a quantifier is reported as a pattern rather than printed as prose.
+func expand(pattern string) ([]string, bool) {
+	rs := []rune(pattern)
+	vs, next, ok := parseAlt(rs, 0)
+	if !ok || next != len(rs) {
+		return nil, false
+	}
+	for _, v := range vs {
+		if strings.TrimSpace(v) == "" {
+			return nil, false
+		}
+	}
+	return vs, len(vs) > 0
+}
+
+// parseAlt reads alternatives separated by a top-level `|`, stopping at the
+// closing paren of the group it was called for.
+func parseAlt(rs []rune, i int) ([]string, int, bool) {
+	var all []string
+	for {
+		vs, next, ok := parseSeq(rs, i)
+		if !ok {
+			return nil, 0, false
+		}
+		all = append(all, vs...)
+		if len(all) > maxVariants {
+			return nil, 0, false
+		}
+		i = next
+		if i < len(rs) && rs[i] == '|' {
+			i++
+			continue
+		}
+		return all, i, true
+	}
+}
+
+// parseSeq reads a concatenation of literals and groups, crossing each group's
+// alternatives into the variants built so far.
+func parseSeq(rs []rune, i int) ([]string, int, bool) {
+	cur := []string{""}
+	for i < len(rs) {
+		c := rs[i]
+		if c == '|' || c == ')' {
+			return cur, i, true
+		}
+		if c == '(' {
+			if !hasPrefix(rs, i, "(?:") {
+				return nil, 0, false
+			}
+			vs, next, ok := parseAlt(rs, i+3)
+			if !ok || next >= len(rs) || rs[next] != ')' {
+				return nil, 0, false
+			}
+			next++
+			if next < len(rs) && rs[next] == '?' {
+				vs = append(vs, "")
+				next++
+			}
+			cur = cross(cur, vs)
+			i = next
+		} else {
+			if strings.ContainsRune(`\[]{}^$.*+?`, c) {
+				return nil, 0, false
+			}
+			for j := range cur {
+				cur[j] += string(c)
+			}
+			i++
+		}
+		if len(cur) > maxVariants {
+			return nil, 0, false
+		}
+	}
+	return cur, i, true
+}
+
+func hasPrefix(rs []rune, i int, s string) bool {
+	return i+len([]rune(s)) <= len(rs) && string(rs[i:i+len([]rune(s))]) == s
+}
+
+func cross(prefixes, suffixes []string) []string {
+	out := make([]string, 0, len(prefixes)*len(suffixes))
+	for _, p := range prefixes {
+		for _, s := range suffixes {
+			out = append(out, p+s)
+		}
+	}
+	return out
 }
 
 // plain strips the format verbs out of a rule message so it reads as a

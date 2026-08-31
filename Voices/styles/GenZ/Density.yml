@@ -6,4 +6,14 @@ message: "%d slang terms in one sentence. Budget is one."
 level: error
 scope: sentence
 max: 1
-token: '\b(?:W|L|cooked|rizz|mid|no cap|fr fr|based(?!\s+(?:on|upon|in))|aura|delulu|skibidi|bussin|goated|lowkey|highkey|glazing|cap)\b'
+# The slang list is shared by Density, Budget and Presence, and `test.sh`
+# fails if the three copies drift. Vale has no include, so the duplication is
+# the price of counting the same vocabulary three ways.
+#
+# Three terms carry guards, because a max rule turns a false positive into a
+# fabricated violation rather than into noise. "mid" and "based" are excluded
+# next to a hyphen ("mid-size", "cloud-based") and "based" before "on|upon|in".
+# "W" and "L" need a modifier in front ("massive W", "took the L"); bare
+# letters match units and list labels. Bare "cap" is gone entirely -- as slang
+# it appears as "no cap", and as a noun it is everywhere in technical prose.
+token: '\b(?:cooked|rizz|no cap|fr fr|aura|delulu|skibidi|bussin|goated|lowkey|highkey|glazing)\b|(?<!-)\bmid\b(?!-)|(?<!-)\bbased\b(?!\s+(?:on|upon|in))|\b(?:a|an|the|big|huge|massive|major|another|clean|absolute|straight|took the|take the)\s+[WL]\b'

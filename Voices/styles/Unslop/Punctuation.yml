@@ -1,5 +1,7 @@
+# Em dash, en dash, and the ASCII double hyphen that stands in for either. The
+# message names the mark it found rather than assuming an em dash.
 extends: existence
-message: "Em dash. Use a comma, a colon, or two sentences."
+message: "Dash break: '%s'. Use a comma, a colon, or two sentences."
 level: error
 nonword: true
 tokens:

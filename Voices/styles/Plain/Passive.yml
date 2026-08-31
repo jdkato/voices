@@ -1,8 +1,17 @@
+# `sequence` matches a be-verb followed by a past participle. The tag filter
+# has to admit every form the tagger actually assigns: "been" is VBN and
+# "being" is VBG, so a filter of VBD|VBZ|VBP alone silently drops every
+# perfect and progressive passive ("has been fixed", "is being written") while
+# still passing its tests. `VB[DZPNG]` covers all five; the pattern is what
+# keeps the rule to be-verbs.
+#
+# Vale cannot tell an agentless passive from one that names its actor, so this
+# flags both and the message asks for the active verb rather than for an agent.
 extends: sequence
-message: "Passive voice: '%s'. Name who acts."
+message: "Passive voice: '%s'. Use the active verb."
 level: warning
 ignorecase: true
 tokens:
-  - tag: 'VBD|VBZ|VBP'
+  - tag: 'VB[DZPNG]'
     pattern: '(?:is|are|was|were|been|being)'
   - tag: VBN

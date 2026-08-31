@@ -1,4 +1,4 @@
-doc.md:1:1:GenZ.Presence:No slang in this paragraph. This voice is not off.
+doc.md:1:1:GenZ.Presence:A paragraph here has no slang. This voice is not off.
 doc.md:3:1:Voices.ThroatClearing:Throat-clearing: 'Here's the thing'. Cut it and state the point.
 doc.md:9:6:Voices.BinaryContrast:Binary contrast: 'is not just a performance problem, it's'. State the second half directly.
 doc.md:10:22:GenZ.Register:Corporate register: 'Furthermore'. Not this voice.

@@ -1,0 +1,3 @@
+doc.md:1:1:GenZ.Presence:A paragraph here has no slang. This voice is not off.
+doc.md:5:15:GenZ.Budget:3 slang terms in one paragraph. Budget is two.
+doc.md:5:15:GenZ.Density:3 slang terms in one sentence. Budget is one.
