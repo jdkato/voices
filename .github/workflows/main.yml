@@ -46,11 +46,13 @@ jobs:
       # advertisement, and .vale.ini here is the config the README hands out.
       - run: vale .
 
-      # The briefs are generated from the rules, so a rule change that does not
-      # regenerate them ships an instruction that disagrees with the check.
+      # The briefs are prose, so nothing regenerates them. This walks the rules
+      # and fails on anything a brief leaves unsaid, and the tests fail if that
+      # walk ever stops being able to fail.
       - uses: actions/setup-go@v5
         with:
           go-version-file: script/brief/go.mod
-      - run: go run . -styles ../../Voices/styles -out ../../briefs
+      - run: go test ./...
         working-directory: script/brief
-      - run: git diff --exit-code briefs/
+      - run: go run . -styles ../../Voices/styles -briefs ../../briefs
+        working-directory: script/brief

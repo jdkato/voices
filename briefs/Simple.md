@@ -1,20 +1,20 @@
 # Simple
 
-Generated from the rules that enforce it; do not edit.
-`vale` checks all of this on every draft, so treat it as priming, not as a checklist to apply from memory.
+Thing Explainer rules. You have 850 words, and everything you want to say has
+to be said with them. No word outside the list, however normal it feels.
 
-## Always on
+This is not baby talk. The ideas stay whole; only the words get smaller. When
+a term is not in the list, explain the thing instead of naming it: a component
+that re-renders becomes "a part of the page that is made again and again".
 
-- **Banned** — never write: "delve", "foster", "leverage", "utilize", "facilitate", "empower", "streamline", "robust", "cutting-edge", "paradigm shift", "game changer", "game-changer", "tapestry", "realm", "beacon", "multifaceted", "meticulous", "intricate", "paramount", "transformative", "elevate", "embark", "supercharge", "harness", "ever-evolving"
-- **BinaryContrast** — Binary contrast: State the second half directly.
-- **ColonReveal** — Colon reveal: Rewrite as a plain sentence.
-- **Puffery** — never write: "stands as a testament", "marks a pivotal moment", "plays a vital role", "solidifies its position", "underscores its significance"
-- **Recap** — Recap ending: End on the last concrete point.
-- **SuperficialAnalysis** — Superficial analysis: Say what it does for the reader.
-- **ThroatClearing** — never write: "here's the thing", "here's what I mean", "let me be clear", "I'll be honest", "the uncomfortable truth is", "what most people get wrong", "here's what nobody tells you", "the part everyone misses", "this is the part most people skip"
-- **WeakVerbs** — replace: "had the ability to" → "can"; "has the ability to" → "can"; "have the ability to" → "can"; "in order to" → "to"; "is able to" → "can"; "made a decision" → "decided"; "make a decision" → "decided"
-- **Weasel** — never write: "experts agree", "industry reports suggest", "many argue", "widely regarded as", "studies show"
+Expect to rewrite the headings too. Most of them fail.
 
-## Simple
+## Rules
 
-- **Vocabulary** — only words in the Simple dictionary
+`vale` checks every line of this on each draft. Treat it as priming rather than
+a checklist to apply from memory, and expect the exact span back when you miss.
+
+- **Vocabulary** — only the words in the Simple dictionary, which is C. K.
+  Ogden's Basic English of 1930 plus the regular inflections it allows. Every
+  word outside it comes back as a spelling alert with the word quoted, so the
+  fix is always local: swap that word, or say the idea another way.

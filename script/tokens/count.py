@@ -101,7 +101,10 @@ def main():
 
     texts = {
         "prompt": skill.read_text(),
-        "brief": (ROOT / f"briefs/{args.voice}.md").read_text(),
+        # What step 4 actually pastes: the shared core plus one voice, the
+        # same pairing as `BasedOnStyles = Voices, <voice>`.
+        "brief": (ROOT / "briefs/Core.md").read_text()
+        + (ROOT / f"briefs/{args.voice}.md").read_text(),
         "alerts_dirty": vale(args.voice, ROOT / "fixtures/before.md"),
         "alerts_clean": vale(args.voice, ROOT / f"fixtures/after/{args.voice}.md"),
     }
@@ -116,7 +119,7 @@ def main():
     print(f"voice:     {args.voice}\n")
     labels = {
         "prompt": "no-ai-slop SKILL.md, as loaded",
-        "brief": f"briefs/{args.voice}.md",
+        "brief": f"briefs/Core.md + briefs/{args.voice}.md",
         "alerts_dirty": "alerts on fixtures/before.md",
         "alerts_clean": f"alerts on fixtures/after/{args.voice}.md",
     }

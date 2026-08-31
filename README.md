@@ -254,22 +254,27 @@ and no rule fails at them.
 Taste is **enumerated** instead. `Banned`, `Weasel`, `Puffery` and
 `ThroatClearing` are lists. They catch the slop a model reaches for first and
 miss the synonym it reaches for next. Worth having, and a filter rather than a
-proof. The briefs mark which is which. A rule Vale can state as a phrase is
-listed in full, and one that stays a pattern is named and counted.
+proof. The briefs mark which is which. A word list is quoted in full. A rule
+that stays a pattern is described instead, and the checker reports how many it
+took on trust.
 
 ## Tokens
 
 ```
 no-ai-slop SKILL.md, as loaded  2,418  ████████████████████████████████████████████████████████
-briefs/Direct.md                  577  █████████████
+briefs/Core.md + Direct.md      1,008  ███████████████████████
 alerts on the draft above         459  ███████████
 alerts on the rewrite               0
 ```
 
 The first is paid every session. So is the brief, if you take step 4 below and
-paste it into `CLAUDE.md`. That trade is 577 tokens against 2,418, for the part
-of the constraint a prompt can state. The alerts are the ones you pay only when
-the prose breaks a rule.
+paste it into `CLAUDE.md`. Of those 1,008 tokens, 756 are `Core.md`, which every
+voice shares, so a second voice costs a few hundred more. The alerts are the
+ones you pay only when the prose breaks a rule.
+
+Both halves are now the same kind of document: a persona, then the constraints.
+The gap is what the constraints cost when a linter holds them instead of the
+model.
 
 Real BPE counts from [`script/tokens/count.py`](script/tokens/count.py), using
 OpenAI's `o200k_base` because Anthropic publishes no offline tokenizer for
@@ -278,7 +283,7 @@ prompt measured is no-ai-slop's `SKILL.md` at `b53e265`, cached in-repo.
 
 | | `Direct` | `Plain` | `Unslop` | `Brevity` | `Simple` | `GenZ` |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Brief | 577 | 588 | 552 | 509 | 468 | 687 |
+| Brief | 1,008 | 1,062 | 1,013 | 1,051 | 977 | 1,146 |
 | Alerts on the draft | 459 | 352 | 465 | 392 | 1,383 | 354 |
 
 ## Getting started
@@ -312,9 +317,14 @@ level to `warning` — or raise the rule so it is an error everywhere:
 `Simple.Vocabulary = error` gives `{ "error": 55 }`. The same syntax switches
 one off: `Voices.ColonReveal = NO`.
 
-**4. Optionally, prime it too.** `cat briefs/Direct.md >> CLAUDE.md`. The briefs
-are generated from the rules (`go run ./script/brief`), and CI fails on a diff,
-so the instruction cannot drift from the check.
+**4. Optionally, prime it too.** `cat briefs/Core.md briefs/Direct.md >> CLAUDE.md`
+— the shared core plus one voice, the same pairing as `BasedOnStyles`.
+
+The briefs are written by hand. The half that primes a model best is how the
+voice should sound, and no renderer produces that. What CI checks is coverage:
+[`go run ./script/brief`](script/brief) walks the rules and fails on anything a
+brief leaves unsaid. Add a word to `Voices.Banned` and the build stays red until
+the brief names it.
 
 Outside Claude Code, Vale reads stdin and sets an exit code:
 
@@ -336,6 +346,11 @@ nothing.
 CI also runs `vale .` over this repository, using the `.vale.ini` at the root
 — the same config the README hands out. The fixtures, the briefs, and the
 cached upstream prompt are excluded; everything else has to pass.
+
+The briefs get the same treatment. `go run ./script/brief` fails on a rule that
+goes unnamed, or on a brief that names a rule which is not there. It also fails
+when a word list changed and the prose did not. `go test ./script/brief` then
+fails if that check ever stops being able to fail. Same trap, one layer up.
 
 The paired half matters because a Vale rule that matches nothing fails
 silently. Four rules here were dead on arrival. A `raw:` list concatenates
