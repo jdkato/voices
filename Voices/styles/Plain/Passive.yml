@@ -5,8 +5,25 @@
 # still passing its tests. `VB[DZPNG]` covers all five; the pattern is what
 # keeps the rule to be-verbs.
 #
-# Vale cannot tell an agentless passive from one that names its actor, so this
-# flags both and the message asks for the active verb rather than for an agent.
+# This flags both the agentless passive and the one that names its actor, and
+# the message asks for the active verb rather than for an agent. That is a
+# choice between two shapes, not a limit of Vale:
+#
+#   - `sequence` knows what a participle is, because it reads the tagger, but
+#     its patterns match one token at a time and cannot see the "by the daemon"
+#     that follows. It catches "is being read"; it cannot spare it.
+#   - `existence` sees the whole span, so `\b(?:is|are|was|were|been|being)\s+
+#     \w+ed\b(?!\s+by\b)` spares "was fixed by Dana" and still flags "was
+#     fixed". It has no tagger, so it pays for that twice: it reads "the light
+#     is red" as a passive, and it misses every irregular participle, which is
+#     most of them ("was written", "is being read"). Enumerating them is the
+#     usual fix, and the list is long.
+#
+# Accuracy about what a passive is beats accuracy about which kind it is, so
+# this keeps the tagger. A reader who wants the agentless-only rule can swap in
+# the second shape. Either way a deliberate passive stays, marked in the file:
+#
+#     <!-- vale Plain.Passive = NO -->
 extends: sequence
 message: "Passive voice: '%s'. Use the active verb."
 level: warning
