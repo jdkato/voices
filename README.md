@@ -209,7 +209,7 @@ that voice.
 | ----- | ---- | ---- | ------- |
 | [`Voices`](Voices/styles/Voices) | [`no-ai-slop`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/no-ai-slop.md) | Inflated words (swapped where one word is the answer), binary contrasts, throat-clearing, puffery, weasel attribution, colon reveals, recap endings, weak verbs | [MIT](https://github.com/petergyang/no-ai-slop/blob/main/LICENSE) · Yang |
 | [`Direct`](Voices/styles/Direct) | [`no-slop`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/no-slop.md) | No hedging, no preamble, sentences under 25 words | [MIT](https://github.com/petergyang/no-ai-slop/blob/main/LICENSE) · Yang |
-| [`Plain`](Voices/styles/Plain) | [`plain-english`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/plain-english.md) | Grade 12, sentences under 35 words, no passive voice, nominalizations swapped for the verb | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
+| [`Plain`](Voices/styles/Plain) | [`plain-english`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/plain-english.md) | Grade 12, sentences under 35 words, no passive voice, nominalizations and wordy phrases swapped for the short form | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
 | [`Unslop`](Voices/styles/Unslop) | [`unslop`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/unslop.md) | No em dashes, sentence-case headings, no vague nouns | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
 | [`Brevity`](Voices/styles/Brevity) | [`smart-brevity`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/smart-brevity.md) | Six-word headlines, a required "Why it matters:", sentences under 20 words | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
 | [`Simple`](Voices/styles/Simple) | [`thing-explainer`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/thing-explainer.md) | Only the 850 words of Basic English | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
@@ -286,7 +286,7 @@ prompt measured is no-ai-slop's `SKILL.md` at `b53e265`, cached in-repo.
 
 | | `Direct` | `Plain` | `Unslop` | `Brevity` | `Simple` | `GenZ` |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Brief | 1,058 | 1,184 | 1,063 | 1,101 | 1,027 | 1,196 |
+| Brief | 1,058 | 1,289 | 1,063 | 1,101 | 1,027 | 1,196 |
 | Alerts on the draft | 469 | 362 | 475 | 402 | 1,393 | 364 |
 
 ## Getting started
@@ -328,6 +328,12 @@ voice should sound, and no renderer produces that. What CI checks is coverage:
 [`go run ./script/brief`](script/brief) walks the rules and fails on anything a
 brief leaves unsaid. Add a word to `Voices.Banned` and the build stays red until
 the brief names it.
+
+A rule that carries its own fix is exempt from that, and the check says how many
+pairs it let through. `Plain.Wordiness` holds 75 swaps and the brief lists none
+of them. The replacement arrives with the alert, so listing the pairs up front
+would pay every session for what the alert delivers on demand. That is this
+package's own argument about the prompt, one level down.
 
 Outside Claude Code, Vale reads stdin and sets an exit code:
 

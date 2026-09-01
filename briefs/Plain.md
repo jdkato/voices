@@ -26,7 +26,12 @@ a checklist to apply from memory, and expect the exact span back when you miss.
   concluded.
 - **Passive** — name who acts. "The daemon retries the write" beats "the write
   is retried". Vale flags every passive, including the ones that name their
-  actor, so if you keep one, keep it on purpose.
+  actor, so if you keep one, keep it on purpose. Marking it in the file says so
+  out loud: `<!-- vale Plain.Passive = NO -->`.
 - **Readability** — grade 12 or below, by Flesch-Kincaid and Gunning Fog. Both
   read sentence length and syllables, so shorter sentences and shorter words
   are the whole lever.
+- **Wordiness** — the wordy phrase has a short form: "due to the fact that" is
+  "because", "in the event that" is "if", "prior to" is "before". There are 75
+  of these and the brief does not list them, because each alert arrives with
+  its own replacement. Write plainly and you will not meet them.

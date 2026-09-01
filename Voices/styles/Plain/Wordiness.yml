@@ -1,0 +1,107 @@
+# The wordy phrase and its short form. This is the oldest advice in plain
+# English and the most mechanical: each entry has one right answer, so the
+# alert carries `action: replace` and an agent applies it without deciding.
+#
+# Every pair here has to survive being applied without thought, which is a
+# higher bar than being good advice. Three kinds were left out:
+#
+#   - Deletions. "In terms of" and "it should be noted that" are usually cut,
+#     not swapped, and nothing here recapitalizes the sentence after.
+#   - Anything the shared core or another Plain rule already owns. "In order
+#     to" is Voices.WeakVerbs, "a number of" is Unslop.Vague, and two rules
+#     firing on one span is noise.
+#   - Swaps that need the sentence read. "In accordance with" is "under" in a
+#     contract and "following" in a recipe, so it stays unlisted.
+#
+# Inflections are separate entries, because the replacement has to agree:
+# "has an impact on" is "affects", not "affect".
+extends: substitution
+message: "Wordy: use '%s' instead of '%s'."
+level: warning
+ignorecase: true
+action:
+  name: replace
+swap:
+  # Cause
+  due to the fact that: because
+  in view of the fact that: because
+  owing to the fact that: because
+  in light of the fact that: because
+  for the reason that: because
+  on the grounds that: because
+  with the result that: so
+  give rise to: cause
+  gives rise to: causes
+  gave rise to: caused
+  # Condition and concession
+  in the event that: if
+  in the event of: if
+  in the absence of: without
+  in spite of the fact that: although
+  despite the fact that: although
+  notwithstanding the fact that: although
+  # Time
+  at this point in time: now
+  at the present time: now
+  at this time: now
+  in the near future: soon
+  prior to: before
+  in advance of: before
+  subsequent to: after
+  at such time as: when
+  until such time as: until
+  during such time as: while
+  on a daily basis: daily
+  on a weekly basis: weekly
+  on a regular basis: regularly
+  in a timely manner: promptly
+  # Quantity
+  a large number of: many
+  a small number of: few
+  the vast majority of: most
+  a majority of: most
+  in the majority of cases: usually
+  a sufficient number of: enough
+  an adequate number of: enough
+  in excess of: more than
+  not less than: at least
+  not more than: at most
+  # Place
+  in close proximity to: near
+  in the vicinity of: near
+  # Reference
+  with regard to: about
+  with respect to: about
+  in regard to: about
+  in relation to: about
+  make reference to: refer to
+  makes reference to: refers to
+  made reference to: referred to
+  # Purpose and means
+  for the purpose of: for
+  by means of: by
+  with the exception of: except
+  the question as to whether: whether
+  # Verbs buried in nouns
+  is capable of: can
+  are capable of: can
+  has the capacity to: can
+  have the capacity to: can
+  take into consideration: consider
+  takes into consideration: considers
+  took into consideration: considered
+  take into account: consider
+  takes into account: considers
+  took into account: considered
+  provide assistance to: help
+  provides assistance to: helps
+  provided assistance to: helped
+  make a contribution to: contribute
+  makes a contribution to: contributes
+  made a contribution to: contributed
+  have an impact on: affect
+  has an impact on: affects
+  had an impact on: affected
+  come to an agreement: agree
+  comes to an agreement: agrees
+  came to an agreement: agreed

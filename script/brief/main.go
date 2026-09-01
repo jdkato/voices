@@ -55,12 +55,17 @@ type rule struct {
 	// untyped and the string case is filtered out where it is read.
 	Tokens []any             `yaml:"tokens"`
 	Swap   map[string]string `yaml:"swap"`
-	Max    int               `yaml:"max"`
-	Min    int               `yaml:"min"`
-	Grade  float64           `yaml:"grade"`
-	Match  string            `yaml:"match"`
-	Dicts  []string          `yaml:"dictionaries"`
-	Token  string            `yaml:"token"`
+	// Action is read only to tell a rule that carries its own fix from one
+	// that does not; the params belong to Vale, not to the brief.
+	Action struct {
+		Name string `yaml:"name"`
+	} `yaml:"action"`
+	Max   int      `yaml:"max"`
+	Min   int      `yaml:"min"`
+	Grade float64  `yaml:"grade"`
+	Match string   `yaml:"match"`
+	Dicts []string `yaml:"dictionaries"`
+	Token string   `yaml:"token"`
 }
 
 type named struct {
@@ -105,7 +110,7 @@ func main() {
 			// visible instead of letting it read as full coverage.
 			note := ""
 			if unchecked > 0 {
-				note = fmt.Sprintf(", %d pattern(s) taken on trust", unchecked)
+				note = fmt.Sprintf(", %d carried by the alert or taken on trust", unchecked)
 			}
 			fmt.Printf("ok   %-16s %d rules stated%s\n", path, len(rules), note)
 			continue
@@ -214,6 +219,18 @@ func requires(r rule) ([]want, int) {
 			}
 		}
 	case "substitution":
+		// A rule that carries its own fix does not need the brief to
+		// enumerate it. The alert arrives with the replacement and the exact
+		// span, so the model learns the swap when it needs it; listing every
+		// pair up front pays for that knowledge in every session instead.
+		// That is the argument this package makes about the prompt it
+		// replaces, and it applies one level down.
+		//
+		// The rule still has to be named and described, and the count of
+		// unenumerated pairs is reported, so the exemption stays visible.
+		if r.Action.Name == "replace" {
+			return out, opaque + len(r.Swap)
+		}
 		keys := make([]string, 0, len(r.Swap))
 		for from := range r.Swap {
 			keys = append(keys, from)
