@@ -17,12 +17,15 @@ never tells you how to sound -- only which habits to drop.
 a checklist to apply from memory, and expect the exact span back when you miss.
 
 - **Banned** — never reach for these. They are the vocabulary of prose with
-  nobody behind it: delve, foster, leverage, utilize, facilitate, empower,
-  streamline, robust, cutting-edge, paradigm shift, game changer (or
-  game-changer), tapestry, realm, beacon, multifaceted, meticulous, intricate,
-  paramount, transformative, elevate, embark, supercharge, harness,
-  ever-evolving. Say the plain thing instead. Most have a one-word swap:
-  "use" for utilize, "strong" for robust, "speed up" for streamline.
+  nobody behind it: delve, foster, empower, cutting-edge, paradigm shift, game
+  changer (or game-changer), tapestry, realm, beacon, multifaceted, paramount,
+  transformative, embark, harness, ever-evolving. Each one needs the sentence
+  rewritten around it, so there is no swap to reach for.
+- **InflatedWords** — the same habit, where one word is the answer: utilize and
+  leverage are "use", facilitate is "help", streamline is "simplify", robust is
+  "strong", meticulous is "careful", intricate is "complex", elevate is "raise",
+  supercharge is "speed up". These alerts carry the replacement, so apply them
+  and move on.
 - **BinaryContrast** — no "this is not X, it's Y" and no "the question isn't X,
   it's Y". The shape promises a reversal and delivers a definition. State Y on
   its own and let the contrast go.

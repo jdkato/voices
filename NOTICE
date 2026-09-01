@@ -9,14 +9,16 @@ This product includes rule definitions derived from no-ai-slop
 (https://github.com/petergyang/no-ai-slop), Copyright (c) 2026 Peter Yang,
 licensed under the MIT License.
 
-The word list in Voices/Banned.yml and the patterns in
-Voices/BinaryContrast.yml, Voices/ThroatClearing.yml, Voices/Puffery.yml,
-Voices/Weasel.yml, Voices/Recap.yml, Voices/SuperficialAnalysis.yml,
-Voices/ColonReveal.yml and Voices/WeakVerbs.yml were transcribed from that
-project's SKILL.md, which enumerates them as prose. The rules here are a
-translation of those lists into Vale's check syntax; the judgment the skill
-also carries -- what to preserve, when a hedge is honest, how much to change --
-is not reproducible as a rule and stays with the original.
+The word list split across Voices/Banned.yml and Voices/InflatedWords.yml, and
+the patterns in Voices/BinaryContrast.yml, Voices/ThroatClearing.yml,
+Voices/Puffery.yml, Voices/Weasel.yml, Voices/Recap.yml,
+Voices/SuperficialAnalysis.yml, Voices/ColonReveal.yml and
+Voices/WeakVerbs.yml were transcribed from that project's SKILL.md, which
+enumerates them as prose. The rules here are a translation of those lists into
+Vale's check syntax, and the replacements attached to the swappable half are
+this project's own. The judgment the skill also carries -- what to preserve,
+when a hedge is honest, how much to change -- is not reproducible as a rule and
+stays with the original.
 
 ------------------------------------------------------------------------------
 awesome-claude-output-styles

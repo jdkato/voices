@@ -113,7 +113,7 @@ done
 # hyphenated slang and no admonition label -- so a rule that quietly widened
 # would keep passing. Each guard file mixes the constructions that must fire
 # with the ones that must not, and the golden records both.
-for pair in Prose:Voices,Plain,Unslop,Brevity GenZ:GenZ; do
+for pair in Prose:Voices,Plain,Unslop,Brevity GenZ:GenZ Sweep:Voices,Plain,Brevity; do
 	name=${pair%%:*}
 	cat > "$work/.vale.ini" <<INI
 StylesPath = styles
@@ -124,6 +124,30 @@ BasedOnStyles = $(echo "${pair#*:}" | sed 's/,/, /g')
 INI
 	compare "guards/$name" "$root/fixtures/guards/$name.md" "$root/testdata/$name.guards.txt"
 done
+
+# Every rule has to fire on something. A Vale rule that matches nothing loads,
+# runs, and reports success, so a golden file can only prove a rule works by
+# containing it -- and a rule no fixture reaches is indistinguishable from one
+# that is broken. Vale cannot report this itself: there is no `--unused`, and
+# an unmatched rule leaves no trace in the output to count.
+#
+# So the goldens are the coverage report. If a new rule fires nowhere, give it
+# a line in whichever fixture fits, or in fixtures/guards/Sweep.md, which
+# exists for the rules no other fixture happens to reach.
+if [ "$update" -eq 0 ]; then
+	(cd "$root/Voices/styles" && find . -name '*.yml') |
+		sed 's|^\./||; s|/|.|; s|\.yml$||' | sort > "$work/rules"
+	cat "$root"/testdata/*.txt | cut -d: -f4 | sort -u > "$work/fired"
+
+	missing=$(comm -23 "$work/rules" "$work/fired")
+	if [ -n "$missing" ]; then
+		echo "FAIL coverage: no fixture reaches these rules, so nothing shows they work"
+		printf '%s\n' "$missing" | sed 's/^/       /'
+		status=1
+	else
+		echo "ok   coverage ($(wc -l < "$work/rules" | tr -d " ") rules, every one exercised)"
+	fi
+fi
 
 [ "$update" -eq 1 ] && echo "golden files rewritten"
 exit $status

@@ -1,6 +1,9 @@
 # Derived from no-ai-slop (https://github.com/petergyang/no-ai-slop),
 # Copyright (c) 2026 Peter Yang, licensed under the MIT License. See NOTICE.
 #
+# The words with no single right replacement. Each one needs the sentence
+# rewritten around it, so this rule reports and stops there; `InflatedWords`
+# holds the ones an agent can swap without thinking.
 extends: existence
 message: "Inflated word: '%s'. Say the plain thing."
 level: error
@@ -8,12 +11,7 @@ ignorecase: true
 tokens:
   - delve
   - foster
-  - leverage
-  - utilize
-  - facilitate
   - empower
-  - streamline
-  - robust
   - cutting-edge
   - paradigm shift
   - game changer
@@ -22,12 +20,8 @@ tokens:
   - realm
   - beacon
   - multifaceted
-  - meticulous
-  - intricate
   - paramount
   - transformative
-  - elevate
   - embark
-  - supercharge
   - harness
   - ever-evolving

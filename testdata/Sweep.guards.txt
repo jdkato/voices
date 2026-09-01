@@ -1,0 +1,4 @@
+doc.md:1:3:Brevity.Headline:Headline runs to 8 words. Six is the budget.
+doc.md:3:13:Voices.Puffery:Importance puffery: 'marks a pivotal moment'. State the fact and let the reader judge.
+doc.md:3:50:Plain.Nominalization:Nominalization: use 'supported' instead of 'provided support for'.
+doc.md:5:1:Voices.ColonReveal:Colon reveal: 'Why it matters: n'. Rewrite as a plain sentence.

@@ -78,8 +78,8 @@ on. If it never changes, move it out of the component.
 ```console
 $ vale draft.md
  draft.md
- 3:1    error  Sentence runs to 45 words. Split it.                                                         Direct.Length
  3:1    error  Throat-clearing: 'Here's the thing'. Cut it and state the point.                             Voices.ThroatClearing
+ 3:1    error  Sentence runs to 45 words. Split it.                                                         Direct.Length
  3:19   error  Hedge: 'it's worth noting'. State it, or say why you're unsure.                              Direct.Hedging
  3:42   error  Preamble: 'the reason your React component is'. Lead with the finding.                       Direct.Preamble
  4:33   error  Hedge: 'is likely because'. State it, or say why you're unsure.                              Direct.Hedging
@@ -87,20 +87,23 @@ $ vale draft.md
  9:6    error  Binary contrast: 'is not just a performance problem, it's'. State the second half directly.  Voices.BinaryContrast
  10:22  error  Sentence runs to 28 words. Split it.                                                         Direct.Length
  10:35  error  Weasel attribution: 'experts agree'. Name the source or cut the claim.                       Voices.Weasel
- 11:1   error  Inflated word: 'robust'. Say the plain thing.                                                Voices.Banned
+ 11:1   error  Inflated word: use 'strong' instead of 'robust'.                                             Voices.InflatedWords
  11:25  error  Inflated word: 'paradigm shift'. Say the plain thing.                                        Voices.Banned
  11:45  error  Inflated word: 'empower'. Say the plain thing.                                               Voices.Banned
- 12:9   error  Inflated word: 'streamline'. Say the plain thing.                                            Voices.Banned
+ 12:9   error  Inflated word: use 'simplify' instead of 'streamline'.                                       Voices.InflatedWords
  13:5   error  Superficial analysis: ', underscoring'. Say what it does for the reader.                     Voices.SuperficialAnalysis
  15:1   error  Recap ending: 'In conclusion'. End on the last concrete point.                               Voices.Recap
  15:25  error  Weak verb phrase: use 'decided' instead of 'made a decision'.                                Voices.WeakVerbs
- 15:44  error  Inflated word: 'leverage'. Say the plain thing.                                              Voices.Banned
+ 15:44  error  Inflated word: use 'use' instead of 'leverage'.                                              Voices.InflatedWords
 
 ✖ 17 errors, 0 warnings and 0 suggestions in 1 file.
 ```
 
-`Voices.WeakVerbs` carries the replacement in its payload, so an agent applies
-that one without thinking about it.
+Four of those seventeen carry `action: replace` and the exact span, so an agent
+applies them without spending a turn on the decision. The split is deliberate:
+`InflatedWords`, `WeakVerbs` and `Nominalization` hold the words with one right
+answer, and `Banned` keeps the ones that need the sentence rewritten around
+them. A fix applied without thought has to be right every time.
 
 <details>
 <summary><b>Simple</b> — only the 850 words of Basic English</summary>
@@ -204,9 +207,9 @@ that voice.
 
 | Voice | From | Adds | License |
 | ----- | ---- | ---- | ------- |
-| [`Voices`](Voices/styles/Voices) | [`no-ai-slop`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/no-ai-slop.md) | Inflated words, binary contrasts, throat-clearing, puffery, weasel attribution, colon reveals, recap endings, weak verbs | [MIT](https://github.com/petergyang/no-ai-slop/blob/main/LICENSE) · Yang |
+| [`Voices`](Voices/styles/Voices) | [`no-ai-slop`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/no-ai-slop.md) | Inflated words (swapped where one word is the answer), binary contrasts, throat-clearing, puffery, weasel attribution, colon reveals, recap endings, weak verbs | [MIT](https://github.com/petergyang/no-ai-slop/blob/main/LICENSE) · Yang |
 | [`Direct`](Voices/styles/Direct) | [`no-slop`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/no-slop.md) | No hedging, no preamble, sentences under 25 words | [MIT](https://github.com/petergyang/no-ai-slop/blob/main/LICENSE) · Yang |
-| [`Plain`](Voices/styles/Plain) | [`plain-english`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/plain-english.md) | Grade 12, sentences under 35 words, no nominalizations or passive voice | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
+| [`Plain`](Voices/styles/Plain) | [`plain-english`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/plain-english.md) | Grade 12, sentences under 35 words, no passive voice, nominalizations swapped for the verb | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
 | [`Unslop`](Voices/styles/Unslop) | [`unslop`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/unslop.md) | No em dashes, sentence-case headings, no vague nouns | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
 | [`Brevity`](Voices/styles/Brevity) | [`smart-brevity`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/smart-brevity.md) | Six-word headlines, a required "Why it matters:", sentences under 20 words | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
 | [`Simple`](Voices/styles/Simple) | [`thing-explainer`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/thing-explainer.md) | Only the 850 words of Basic English | [MIT](https://github.com/smixs/awesome-claude-output-styles/blob/main/LICENSE) · Shima |
@@ -262,13 +265,13 @@ took on trust.
 
 ```
 no-ai-slop SKILL.md, as loaded  2,418  ████████████████████████████████████████████████████████
-briefs/Core.md + Direct.md      1,008  ███████████████████████
-alerts on the draft above         459  ███████████
+briefs/Core.md + Direct.md      1,058  ████████████████████████
+alerts on the draft above         469  ███████████
 alerts on the rewrite               0
 ```
 
 The first is paid every session. So is the brief, if you take step 4 below and
-paste it into `CLAUDE.md`. Of those 1,008 tokens, 756 are `Core.md`, which every
+paste it into `CLAUDE.md`. Of those 1,058 tokens, 806 are `Core.md`, which every
 voice shares, so a second voice costs a few hundred more. The alerts are the
 ones you pay only when the prose breaks a rule.
 
@@ -283,8 +286,8 @@ prompt measured is no-ai-slop's `SKILL.md` at `b53e265`, cached in-repo.
 
 | | `Direct` | `Plain` | `Unslop` | `Brevity` | `Simple` | `GenZ` |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Brief | 1,008 | 1,062 | 1,013 | 1,051 | 977 | 1,146 |
-| Alerts on the draft | 459 | 352 | 465 | 392 | 1,383 | 354 |
+| Brief | 1,058 | 1,184 | 1,063 | 1,101 | 1,027 | 1,196 |
+| Alerts on the draft | 469 | 362 | 475 | 402 | 1,393 | 364 |
 
 ## Getting started
 
@@ -351,6 +354,12 @@ The briefs get the same treatment. `go run ./script/brief` fails on a rule that
 goes unnamed, or on a brief that names a rule which is not there. It also fails
 when a word list changed and the prose did not. `go test ./script/brief` then
 fails if that check ever stops being able to fail. Same trap, one layer up.
+
+`./test.sh` ends on a coverage line: every rule in the package has to fire on
+some fixture. This is `vale --unused` done by hand, because Vale has no such
+flag and an unmatched rule leaves nothing in the output to count. Without it a
+rule that can never match passes the whole suite, and three rules here had no
+fixture reaching them at all.
 
 The paired half matters because a Vale rule that matches nothing fails
 silently. Four rules here were dead on arrival. A `raw:` list concatenates

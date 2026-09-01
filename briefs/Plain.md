@@ -14,10 +14,16 @@ a checklist to apply from memory, and expect the exact span back when you miss.
 
 - **Length** — 35 words is the ceiling for a sentence. A long sentence usually
   hides a list; write the list.
-- **Nominalization** — use the verb, not the noun built from it. "provide
-  support for" is "supports". "performs an analysis" is "analyzes". Same for
-  "gives consideration to", "conducts an investigation", and "reaches a
-  conclusion".
+- **Nominalization** — use the verb, not the noun built from it. Each of these
+  carries its replacement, so an agent applies it without deciding anything:
+  provide support for → support, provides support for → supports, provided
+  support for → supported; perform an analysis → analyze, performs an analysis
+  → analyzes, performed an analysis → analyzed; give consideration to →
+  consider, gives consideration to → considers, given consideration to →
+  considered; conduct an investigation → investigate, conducts an investigation
+  → investigates, conducted an investigation → investigated; reach a conclusion
+  → conclude, reaches a conclusion → concludes, reached a conclusion →
+  concluded.
 - **Passive** — name who acts. "The daemon retries the write" beats "the write
   is retried". Vale flags every passive, including the ones that name their
   actor, so if you keep one, keep it on purpose.

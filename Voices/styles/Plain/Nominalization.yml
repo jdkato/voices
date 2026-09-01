@@ -1,12 +1,29 @@
-# The shared core already replaces "made a decision" and "has the ability to";
-# these are the ones it has no single-word swap for.
-extends: existence
-message: "Nominalization: '%s'. Use the verb."
+# The shared core already swaps "made a decision" and "has the ability to";
+# these are the noun-plus-verb pairs it has no entry for.
+#
+# Each one has a single right answer once the tense is pinned, so this is a
+# `substitution` and every alert carries its own fix. The inflections are
+# separate entries because the replacement has to agree with them: "provides
+# support for" is "supports", not "support".
+extends: substitution
+message: "Nominalization: use '%s' instead of '%s'."
 level: error
 ignorecase: true
-tokens:
-  - 'provide(?:s|d)? support for'
-  - 'perform(?:s|ed)? an analysis'
-  - 'give(?:s|n)? consideration to'
-  - 'conduct(?:s|ed)? an investigation'
-  - 'reach(?:es|ed)? a conclusion'
+action:
+  name: replace
+swap:
+  provides support for: supports
+  provided support for: supported
+  provide support for: support
+  performs an analysis: analyzes
+  performed an analysis: analyzed
+  perform an analysis: analyze
+  gives consideration to: considers
+  given consideration to: considered
+  give consideration to: consider
+  conducts an investigation: investigates
+  conducted an investigation: investigated
+  conduct an investigation: investigate
+  reaches a conclusion: concludes
+  reached a conclusion: concluded
+  reach a conclusion: conclude
