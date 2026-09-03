@@ -5,6 +5,10 @@ on: [push, pull_request]
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # Uploading the archive to a release needs a token that can write
+    # contents; this repository's default GITHUB_TOKEN is read-only.
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
