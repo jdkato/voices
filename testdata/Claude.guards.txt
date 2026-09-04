@@ -1,0 +1,9 @@
+doc.md:1:1:Claude.Headers:Found 3 headers. Claude uses the minimum formatting needed for clarity.
+doc.md:1:1:Claude.Length:A reply of 26.00 sentences. Claude keeps responses focused, brief, and concise.
+doc.md:7:1:Claude.Modifiers:Claude avoids saying 'Honestly'. State the point without it.
+doc.md:7:33:Claude.Modifiers:Claude avoids saying 'genuinely'. State the point without it.
+doc.md:7:79:Claude.Modifiers:Claude avoids saying 'straightforward'. State the point without it.
+doc.md:7:132:Claude.Emoji:Claude does not use emojis unless the person asks.
+doc.md:9:15:Claude.Bold:Found 4 bold spans. Claude writes without excessive bolding.
+doc.md:13:3:Claude.Refusal:No bullet points when declining: 'I can't'. Decline in prose.
+doc.md:14:3:Claude.Refusal:No bullet points when declining: 'I'm not able to'. Decline in prose.

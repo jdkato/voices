@@ -1,0 +1,11 @@
+# From the Claude Fable 5.1 prompt: "After its last tool call in a turn,
+# Claude states the answer the person asked for in one or two sentences; a
+# sign-off alone, such as 'Done.', is not a reply."
+extends: existence
+message: "A sign-off alone is not a reply. State the answer."
+link: https://platform.claude.com/docs/en/release-notes/system-prompts/claude-fable-5-1
+level: error
+scope: raw
+nonword: true
+tokens:
+  - '(?is)\A\s*(?:done|fixed|all set|complete|completed|finished|updated)[.!]?\s*\z'

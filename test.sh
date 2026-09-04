@@ -40,7 +40,7 @@ cp -R "$root/Voices/styles" "$work/styles"
 cp -R "$std" "$work/styles/Std"
 mkdir -p "$root/testdata"
 
-voices="Direct GenZ Coach Simple"
+voices="Direct GenZ Coach Simple Claude"
 
 # Alerts that share a line and column come back in whatever order the checks
 # ran, and that order is not part of the contract -- it has changed between
@@ -112,7 +112,7 @@ done
 # hyphenated slang and no admonition label -- so a rule that quietly widened
 # would keep passing. Each guard file mixes the constructions that must fire
 # with the ones that must not, and the golden records both.
-for pair in Prose:Voices GenZ:GenZ Sweep:Voices; do
+for pair in Prose:Voices GenZ:GenZ Sweep:Voices Claude:Voices,Claude SignOff:Claude; do
 	name=${pair%%:*}
 	cat > "$work/.vale.ini" <<INI
 StylesPath = styles

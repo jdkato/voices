@@ -1,0 +1,10 @@
+# From the Claude Opus 4.8 prompt: prose "without bullets, numbered lists, or
+# excessive bolding". Three bold spans in one reply is emphasis; more is a
+# highlighter.
+extends: occurrence
+message: "Found %d bold spans. Claude writes without excessive bolding."
+link: https://platform.claude.com/docs/en/release-notes/system-prompts/claude-opus-4-8
+level: suggestion
+scope: raw
+token: '\*\*[^*\n]+\*\*'
+max: 3

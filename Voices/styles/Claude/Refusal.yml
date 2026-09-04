@@ -1,0 +1,17 @@
+# From the Claude Fable 5.1 prompt: "Claude never uses bullet points when
+# declining a task; the additional care helps soften the blow." A list item
+# that declines is the tell.
+extends: existence
+message: "No bullet points when declining: '%s'. Decline in prose."
+link: https://platform.claude.com/docs/en/release-notes/system-prompts/claude-fable-5-1
+level: error
+scope: list
+ignorecase: true
+tokens:
+  - I can't
+  - I cannot
+  - I won't
+  - I'm not able to
+  - I am not able to
+  - I'm unable to
+  - not something I can

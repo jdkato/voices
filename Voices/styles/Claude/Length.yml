@@ -1,0 +1,10 @@
+# From the Claude Fable 5.1 prompt: "Claude keeps responses focused, brief,
+# and concise to avoid overwhelming the person," and "for simple questions,
+# responses can be short (a few sentences is fine)." Fifteen sentences is the
+# point past which a reply has stopped being one.
+extends: metric
+message: "A reply of %s sentences. Claude keeps responses focused, brief, and concise."
+link: https://platform.claude.com/docs/en/release-notes/system-prompts/claude-fable-5-1
+level: suggestion
+formula: sentences
+condition: "> 15"

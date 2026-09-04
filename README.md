@@ -48,6 +48,7 @@ $ vale sync
 | [`GenZ`](Voices/styles/GenZ) | [`gen-z`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/gen-z.md), [`street`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/street.md) | One slang term a sentence, two a paragraph, at least one |
 | [`Coach`](Voices/styles/Coach) | [`coach`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/coach.md) | One note (100 words), one image, one "Next:" action |
 | [`Simple`](Voices/styles/Simple) | [`thing-explainer`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/thing-explainer.md) | Only the 850 words of Basic English |
+| [`Claude`](Voices/styles/Claude) | Anthropic's published [system prompt](https://platform.claude.com/docs/en/release-notes/system-prompts) | No "genuinely", no emoji, no bullets in a refusal, two headers, three bold spans, fifteen sentences, no "Done." alone |
 
 The catalog holds dozens of styles; these are the ones that convert into
 rules a linter can hold. Each covers a different kind of constraint --
@@ -56,6 +57,14 @@ overlapping.
 
 `Coach` wants `Voices.ColonReveal = NO` in your config: its required
 `Next:` label is the colon reveal the shared core forbids.
+
+`Claude` is the demo for the argument: the formatting section of a production
+system prompt is already a linter. Each rule quotes the sentence it enforces.
+The sentences come from the claude.ai prompts Anthropic publishes, for Claude
+Fable 5.1 and Claude Opus 4.8. The voice is derived from those prompts and is
+not Anthropic's. It holds a reply to the prompt's defaults. Where the prompt
+says "unless the person asks", the config is where you say they did:
+`Claude.Emoji = NO`.
 
 See [vale.sh/blog/voices](https://vale.sh/blog/voices) for one draft run through each voice.
 

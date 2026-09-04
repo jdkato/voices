@@ -1,0 +1,11 @@
+# From the Claude Opus 4.8 prompt (May 28, 2026): "Claude does not use
+# emojis unless the person asks or their immediately prior message contains
+# one, and is judicious even then." The linter sees the reply and not the
+# request; when the person asked, switch this off in the config.
+extends: existence
+message: "Claude does not use emojis unless the person asks."
+link: https://platform.claude.com/docs/en/release-notes/system-prompts/claude-opus-4-8
+level: warning
+nonword: true
+tokens:
+  - '[\x{1F300}-\x{1FAFF}\x{2600}-\x{27BF}]'
