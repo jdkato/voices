@@ -9,8 +9,9 @@
 // was still a function of the rules. It was wrong and consistent.
 //
 // So the direction is reversed. A person writes the brief -- including the half
-// no renderer reaches, which is how the voice should sound -- and this walks
-// the rules to find what went unsaid:
+// no renderer reaches, which is how the voice should sound -- as Brief.md
+// beside the rules it describes, so it ships in the archive and lands on a
+// user's StylesPath with them. This walks the rules to find what went unsaid:
 //
 //   - Every rule is named in a `- **Name** —` line, and every such line names a
 //     rule that exists. A rule cannot be added, dropped, or renamed in silence.
@@ -22,7 +23,7 @@
 // there. The bold-name scan catches the usual shape of that. The rest of the
 // prose is on whoever wrote it.
 //
-// Usage: go run ./script/brief -styles Voices/styles -briefs briefs
+// Usage: go run ./script/brief -styles Voices/styles
 package main
 
 import (
@@ -37,12 +38,14 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// core is the shared style, and the brief that carries it. Every voice turns
-// it on, so it is stated once and pasted alongside whichever voice you pick.
-const (
-	core      = "Voices"
-	coreBrief = "Core"
-)
+// core is the shared style. Every voice turns it on, so its brief is stated
+// once and pasted alongside whichever voice you pick.
+const core = "Voices"
+
+// briefFile is the name a brief has inside its style. Vale loads only `.yml`
+// from a style directory, so the file is inert to the linter and travels with
+// the rules through `vale sync`.
+const briefFile = "Brief.md"
 
 // rule is the subset of a Vale rule a brief can be checked against. Anything
 // this struct does not model contributes its name and nothing else.
@@ -75,7 +78,6 @@ type named struct {
 
 func main() {
 	styles := flag.String("styles", "Voices/styles", "path to the styles directory")
-	briefs := flag.String("briefs", "briefs", "directory holding the briefs")
 	flag.Parse()
 
 	names, err := voices(*styles)
@@ -83,21 +85,13 @@ func main() {
 		fail(err)
 	}
 
-	// The shared style and its brief are named differently; every voice
-	// answers to itself.
-	pairs := []struct{ style, brief string }{{core, coreBrief}}
-	for _, n := range names {
-		pairs = append(pairs, struct{ style, brief string }{n, n})
-	}
-
 	total := 0
-	for _, p := range pairs {
-		style, brief := p.style, p.brief
+	for _, style := range append([]string{core}, names...) {
 		rules, lErr := load(filepath.Join(*styles, style))
 		if lErr != nil {
 			fail(lErr)
 		}
-		path := filepath.Join(*briefs, brief+".md")
+		path := filepath.Join(*styles, style, briefFile)
 		text, rErr := os.ReadFile(path)
 		if rErr != nil {
 			fail(rErr)
@@ -112,7 +106,7 @@ func main() {
 			if unchecked > 0 {
 				note = fmt.Sprintf(", %d carried by the alert or taken on trust", unchecked)
 			}
-			fmt.Printf("ok   %-16s %d rules stated%s\n", path, len(rules), note)
+			fmt.Printf("ok   %-30s %d rules stated%s\n", path, len(rules), note)
 			continue
 		}
 		total += len(gaps)

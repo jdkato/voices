@@ -58,13 +58,14 @@ jobs:
         env:
           STD: ${{ github.workspace }}/std-src/Std
 
-      # The briefs are prose, so nothing regenerates them. This walks the rules
-      # and fails on anything a brief leaves unsaid, and the tests fail if that
-      # walk ever stops being able to fail.
+      # The briefs are prose, so nothing regenerates them. Each sits beside
+      # its rules as Brief.md and ships in the archive. This walks the rules
+      # and fails on anything a brief leaves unsaid, and the tests fail if
+      # that walk ever stops being able to fail.
       - uses: actions/setup-go@v5
         with:
           go-version-file: script/brief/go.mod
       - run: go test ./...
         working-directory: script/brief
-      - run: go run . -styles ../../Voices/styles -briefs ../../briefs
+      - run: go run . -styles ../../Voices/styles
         working-directory: script/brief

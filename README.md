@@ -14,7 +14,7 @@
 <thead>
 <tr>
 <th><a href="https://vale.sh/blog/voices">Demo</a></th>
-<th><a href="briefs">Briefs</a></th>
+<th><a href="Voices/styles/Voices/Brief.md">Briefs</a></th>
 <th><a href="https://github.com/vale-cli/agent-tools">Agent tools</a></th>
 <th><a href="https://vale.sh/docs/install">Install Vale</a></th>
 </tr>
@@ -119,7 +119,11 @@ Every prose file Claude writes is linted, and the alerts go back into the same t
 > [!TIP]
 > The hook relays **errors** only. `Simple` is advisory by design. Widen the hook's level in `/plugin`, or raise a rule with `Simple.Vocabulary = error`.
 
-To prime the model as well as check it, [`briefs/`](briefs) holds a generated summary per voice: `cat briefs/Core.md briefs/Direct.md >> CLAUDE.md`.
+To prime the model as well as check it, each style carries a brief, `Brief.md` beside its rules. The brief says how the voice should sound and names every word its rules ban. The briefs ship in the archive, so after `vale sync` they sit on your `StylesPath` at `styles/<Voice>/Brief.md`. Paste the core and the voice you picked into the file your agent reads:
+
+```console
+$ cat styles/Voices/Brief.md styles/Direct/Brief.md >> CLAUDE.md
+```
 
 Outside Claude Code, Vale reads stdin and sets an exit code:
 
