@@ -8,3 +8,14 @@ level: suggestion
 scope: raw
 token: '\*\*[^*\n]+\*\*'
 max: 3
+
+tests:
+  - name: fires
+    input: |
+      **One** and **two** and **three** and **four**.
+    want: |
+      1:1:Claude.Bold:Found 4 bold spans. Claude writes without excessive bolding.
+  - name: clean
+    input: |
+      **One** and **two**.
+    want: ""

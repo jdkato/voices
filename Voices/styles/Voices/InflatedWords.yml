@@ -46,3 +46,14 @@ swap:
   robust: strong
   meticulous: careful
   intricate: complex
+
+tests:
+  - name: fires
+    input: |
+      We utilize caching.
+    want: |
+      1:4:Voices.InflatedWords:Inflated word: use 'use' instead of 'utilize'.
+  - name: clean
+    input: |
+      We use caching.
+    want: ""

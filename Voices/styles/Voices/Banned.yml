@@ -25,3 +25,14 @@ tokens:
   - 'embark(?:s|ed|ing)?'
   - 'harness(?:es|ed|ing)?'
   - ever-evolving
+
+tests:
+  - name: fires
+    input: |
+      Let's delve into it.
+    want: |
+      1:7:Voices.Banned:Inflated word: 'delve'. Say the plain thing.
+  - name: clean
+    input: |
+      Let's look at it.
+    want: ""

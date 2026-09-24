@@ -20,3 +20,5 @@ a checklist to apply from memory, and expect the exact span back when you miss.
   second idea hiding in it and give it its own sentence.
 - **Preamble** — open on the finding. Cut the run-up: "the reason X is", "what
   this means is", "in this article". The reader arrived for the answer.
+- **Ease** — every paragraph scores above 50 on Flesch reading ease. If a
+  sentence is under 25 words and still scores low, the words are long.

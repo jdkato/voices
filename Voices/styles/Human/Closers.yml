@@ -1,0 +1,30 @@
+# The last line of a reply that is a sign-off rather than a point. End on
+# the last concrete thing.
+extends: existence
+message: "Closer: '%s'. End on the last point."
+level: error
+ignorecase: true
+tokens:
+  - "I hope this helps"
+  - "Hope this helps"
+  - "Let me know if you have"
+  - "Let me know if you need"
+  - "Let me know if you want"
+  - "Feel free to"
+  - "Happy to help"
+  - "Don't hesitate to"
+  - "In summary,"
+  - "To sum up"
+  - "If you have any other questions"
+  - "If you have any further questions"
+
+tests:
+  - name: fires
+    input: |
+      The cache is cold. I hope this helps!
+    want: |
+      1:20:Human.Closers:Closer: 'I hope this helps'. End on the last point.
+  - name: clean
+    input: |
+      The cache is cold. Warm it before the first request.
+    want: ""

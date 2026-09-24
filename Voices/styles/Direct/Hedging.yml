@@ -8,3 +8,14 @@ tokens:
   - "it(?:'s| is) worth noting"
   - "it(?:'s| is) important to note"
   - "one could argue"
+
+tests:
+  - name: fires
+    input: |
+      It's worth noting that this works.
+    want: |
+      1:1:Direct.Hedging:Hedge: 'It's worth noting'. State it, or say why you're unsure.
+  - name: clean
+    input: |
+      This works.
+    want: ""

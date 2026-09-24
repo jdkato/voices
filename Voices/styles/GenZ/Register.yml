@@ -11,3 +11,14 @@ tokens:
   - please be advised
   - as per
   - kindly note
+
+tests:
+  - name: fires
+    input: |
+      Furthermore, it works.
+    want: |
+      1:1:GenZ.Register:Corporate register: 'Furthermore'. Not this voice.
+  - name: clean
+    input: |
+      Also, it works.
+    want: ""

@@ -15,3 +15,14 @@ tokens:
   - "here's what nobody tells you"
   - the part everyone misses
   - this is the part most people skip
+
+tests:
+  - name: fires
+    input: |
+      Here's the thing: it works.
+    want: |
+      1:1:Voices.ThroatClearing:Throat-clearing: 'Here's the thing'. Cut it and state the point.
+  - name: clean
+    input: |
+      It works.
+    want: ""

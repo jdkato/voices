@@ -15,3 +15,14 @@ tokens:
   - I am not able to
   - I'm unable to
   - not something I can
+
+tests:
+  - name: fires
+    input: |
+      - I can't help with that.
+    want: |
+      1:3:Claude.Refusal:No bullet points when declining: 'I can't'. Decline in prose.
+  - name: clean
+    input: |
+      I can't help with that, because it would expose the key.
+    want: ""

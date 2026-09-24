@@ -14,3 +14,14 @@ level: warning
 nonword: true
 tokens:
   - '(?m)^(?!(?:Note|Tip|Warning|Caution|Important|Example|Related|See also|TODO|Update|Requirements?|Default|Usage)\b)[A-Z][\w\s]{2,40}: [a-z]'
+
+tests:
+  - name: fires
+    input: |
+      The answer: it works.
+    want: |
+      1:1:Voices.ColonReveal:Colon reveal: 'The answer: i'. Rewrite as a plain sentence.
+  - name: clean
+    input: |
+      The answer is that it works.
+    want: ""

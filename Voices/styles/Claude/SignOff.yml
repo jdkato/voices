@@ -9,3 +9,14 @@ scope: raw
 nonword: true
 tokens:
   - '(?is)\A\s*(?:done|fixed|all set|complete|completed|finished|updated)[.!]?\s*\z'
+
+tests:
+  - name: fires
+    input: |
+      Done.
+    want: |
+      1:1:Claude.SignOff:A sign-off alone is not a reply. State the answer.
+  - name: clean
+    input: |
+      Done. The file is written.
+    want: ""

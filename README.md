@@ -44,19 +44,19 @@ $ vale sync
 | Voice | From | Adds |
 | ----- | ---- | ---- |
 | [`Voices`](Voices/styles/Voices) | [`no-ai-slop`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/no-ai-slop.md) | Inflated words, binary contrasts, throat-clearing, puffery, weasel attribution, colon reveals, recap endings, weak verbs |
-| [`Direct`](Voices/styles/Direct) | [`no-slop`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/no-slop.md) | No hedging, no preamble, sentences under 25 words |
+| [`Direct`](Voices/styles/Direct) | [`no-slop`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/no-slop.md) | No hedging, no preamble, sentences under 25 words, paragraphs above 50 on reading ease |
 | [`GenZ`](Voices/styles/GenZ) | [`gen-z`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/gen-z.md), [`street`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/street.md) | One slang term a sentence, two a paragraph, at least one |
 | [`Coach`](Voices/styles/Coach) | [`coach`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/coach.md) | One note (100 words), one image, one "Next:" action |
-| [`Simple`](Voices/styles/Simple) | [`thing-explainer`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/thing-explainer.md) | Only the 850 words of Basic English |
+| [`Simple`](Voices/styles/Simple) | [`thing-explainer`](https://github.com/smixs/awesome-claude-output-styles/blob/main/output-styles/thing-explainer.md) | Only the 850 words of Basic English, paragraphs above 80 on reading ease |
+| [`Human`](Voices/styles/Human) | the published counts of words that rose with machine-written prose | No tics, no "Great question" openers, no "hope this helps" closers, one dash a paragraph |
 | [`Claude`](Voices/styles/Claude) | Anthropic's published [system prompt](https://platform.claude.com/docs/en/release-notes/system-prompts) | No "genuinely", no emoji, no bullets in a refusal, two headers, three bold spans, fifteen sentences, no "Done." alone |
 
-The catalog holds dozens of styles; these are the ones that convert into
-rules a linter can hold. Each covers a different kind of constraint --
-patterns, register, structure, vocabulary -- so they compose instead of
-overlapping.
+The catalog holds dozens of styles. These are the ones a linter can hold
+as rules. Each one checks a different thing, such as the words, the tone,
+the shape, or the word list, so they stack instead of overlapping.
 
-`Coach` wants `Voices.ColonReveal = NO` in your config: its required
-`Next:` label is the colon reveal the shared core forbids.
+`Coach` needs `Voices.ColonReveal = NO` in your config. Its `Next:` label
+is a colon reveal, which the shared core forbids.
 
 `Claude` is the demo for the argument: the formatting section of a production
 system prompt is already a linter. Each rule quotes the sentence it enforces.

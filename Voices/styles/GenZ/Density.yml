@@ -9,3 +9,14 @@ message: "%d slang terms in one sentence. Budget is one."
 level: error
 scope: sentence
 max: 1
+
+tests:
+  - name: fires
+    input: |
+      no cap this is goated.
+    want: |
+      1:1:GenZ.Density:2 slang terms in one sentence. Budget is one.
+  - name: clean
+    input: |
+      This is goated. No cap.
+    want: ""

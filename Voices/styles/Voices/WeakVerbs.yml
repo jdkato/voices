@@ -12,3 +12,14 @@ swap:
   'ha(?:s|ve|d) the ability to': can
   'is able to': can
   'in order to': to
+
+tests:
+  - name: fires
+    input: |
+      We made a decision to ship.
+    want: |
+      1:4:Voices.WeakVerbs:Weak verb phrase: use 'decided' instead of 'made a decision'.
+  - name: clean
+    input: |
+      We decided to ship.
+    want: ""

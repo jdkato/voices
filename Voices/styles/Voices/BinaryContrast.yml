@@ -10,3 +10,14 @@ tokens:
   - '\b(?:is|are|it.s|that.s) not (?:just )?[\w\s]{1,30}?[,.;] (?:it.s|but|they.re)\b'
   - '\b(?:isn.t|aren.t) (?:just )?[\w\s]{1,30}?[,.;] (?:it.s|but|they.re)\b'
   - '\bthe question is(?:n.t| not) [\w\s]{1,30}?[,.] it.s\b'
+
+tests:
+  - name: fires
+    input: |
+      This is not just a bug, it's a design flaw.
+    want: |
+      1:6:Voices.BinaryContrast:Binary contrast: 'is not just a bug, it's'. State the second half directly.
+  - name: clean
+    input: |
+      This is a design flaw.
+    want: ""

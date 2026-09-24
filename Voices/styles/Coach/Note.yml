@@ -4,3 +4,14 @@ level: error
 scope: raw
 max: 100
 token: '\b\w+\b'
+
+tests:
+  - name: fires
+    input: |
+      word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word word
+    want: |
+      1:1:Coach.Note:101 words. One note means one hundred words.
+  - name: clean
+    input: |
+      A short note.
+    want: ""

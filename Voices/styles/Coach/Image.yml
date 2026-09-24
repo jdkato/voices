@@ -7,3 +7,14 @@ scope: raw
 min: 1
 max: 1
 token: '!\['
+
+tests:
+  - name: fires
+    input: |
+      No image here.
+    want: |
+      1:1:Coach.Image:Found 0 images. A coaching note carries exactly one.
+  - name: clean
+    input: |
+      ![A runner at dawn](dawn.png)
+    want: ""

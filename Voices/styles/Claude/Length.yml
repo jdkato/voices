@@ -8,3 +8,14 @@ link: https://platform.claude.com/docs/en/release-notes/system-prompts/claude-fa
 level: suggestion
 formula: sentences
 condition: "> 15"
+
+tests:
+  - name: fires
+    input: |
+      It works. It works. It works. It works. It works. It works. It works. It works. It works. It works. It works. It works. It works. It works. It works. It works.
+    want: |
+      1:1:Claude.Length:A reply of 16.00 sentences. Claude keeps responses focused, brief, and concise.
+  - name: clean
+    input: |
+      It works. That is all.
+    want: ""

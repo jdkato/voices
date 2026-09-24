@@ -12,3 +12,14 @@ tokens:
   - genuinely
   - honestly
   - straightforward
+
+tests:
+  - name: fires
+    input: |
+      This is genuinely hard.
+    want: |
+      1:9:Claude.Modifiers:Claude avoids saying 'genuinely'. State the point without it.
+  - name: clean
+    input: |
+      This is hard.
+    want: ""

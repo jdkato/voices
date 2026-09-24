@@ -6,3 +6,14 @@ message: "%d slang terms in one paragraph. Budget is two."
 level: error
 scope: paragraph
 max: 2
+
+tests:
+  - name: fires
+    input: |
+      fr fr, no cap, this is goated.
+    want: |
+      1:1:GenZ.Budget:3 slang terms in one paragraph. Budget is two.
+  - name: clean
+    input: |
+      no cap, this works.
+    want: ""

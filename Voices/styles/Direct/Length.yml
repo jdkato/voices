@@ -2,3 +2,14 @@ extends: Std.Readability.SentenceLength
 message: "Sentence runs to %d words. Split it."
 level: error
 max: 25
+
+tests:
+  - name: fires
+    input: |
+      When you have finished the installation and confirmed that the service starts, open the settings page and choose the account you want to connect, and then paste the token.
+    want: |
+      1:1:Direct.Length:Sentence runs to 29 words. Split it.
+  - name: clean
+    input: |
+      Open the settings page. Choose the account.
+    want: ""

@@ -7,3 +7,14 @@ message: "A paragraph here has no slang. This voice is not off."
 level: suggestion
 scope: paragraph
 min: 1
+
+tests:
+  - name: fires
+    input: |
+      Nothing here at all.
+    want: |
+      1:1:GenZ.Presence:A paragraph here has no slang. This voice is not off.
+  - name: clean
+    input: |
+      This is goated.
+    want: ""

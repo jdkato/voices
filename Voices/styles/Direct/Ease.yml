@@ -1,0 +1,20 @@
+# Short sentences are the rule; short words are the other half. Flesch
+# reading ease scores both, and 50 is where technical prose stops being
+# plain.
+extends: metric
+message: "This paragraph scores %s on reading ease. Keep it above 50: short words, short sentences."
+level: error
+scope: paragraph
+formula: round(flesch_reading_ease)
+condition: "< 50"
+
+tests:
+  - name: fires
+    input: |
+      Notwithstanding the aforementioned considerations, the organization's interdepartmental reorganization initiative necessitated comprehensive reevaluation of institutional methodologies.
+    want: |
+      1:1:Direct.Ease:This paragraph scores -152.00 on reading ease. Keep it above 50: short words, short sentences.
+  - name: clean
+    input: |
+      The service starts. Open the settings page and paste the token.
+    want: ""

@@ -16,6 +16,7 @@ doc.md:6:14:Simple.Vocabulary:'React's' is outside Basic English. Say it in shor
 doc.md:6:22:Simple.Vocabulary:'referential' is outside Basic English. Say it in shorter words.
 doc.md:6:34:Simple.Vocabulary:'equality' is outside Basic English. Say it in shorter words.
 doc.md:6:43:Simple.Vocabulary:'check' is outside Basic English. Say it in shorter words.
+doc.md:7:1:Simple.Ease:This paragraph scores 25.00 on reading ease. Basic English reads above 80.
 doc.md:7:5:Simple.Vocabulary:'want' is outside Basic English. Say it in shorter words.
 doc.md:7:13:Simple.Vocabulary:'consider' is outside Basic English. Say it in shorter words.
 doc.md:7:22:Simple.Vocabulary:'memoization' is outside Basic English. Say it in shorter words.
@@ -40,6 +41,7 @@ doc.md:12:1:Simple.Vocabulary:'team' is outside Basic English. Say it in shorter
 doc.md:12:9:Simple.Vocabulary:'streamline' is outside Basic English. Say it in shorter words.
 doc.md:12:9:Voices.InflatedWords:Inflated word: use 'simplify' instead of 'streamline'.
 doc.md:12:46:Simple.Vocabulary:'render' is outside Basic English. Say it in shorter words.
+doc.md:13:1:Simple.Ease:This paragraph scores 48.00 on reading ease. Basic English reads above 80.
 doc.md:13:1:Simple.Vocabulary:'path' is outside Basic English. Say it in shorter words.
 doc.md:13:5:Voices.SuperficialAnalysis:Superficial analysis: ', underscoring'. Say what it does for the reader.
 doc.md:13:7:Simple.Vocabulary:'underscoring' is outside Basic English. Say it in shorter words.
@@ -50,6 +52,7 @@ doc.md:15:20:Simple.Vocabulary:'team' is outside Basic English. Say it in shorte
 doc.md:15:25:Voices.WeakVerbs:Weak verb phrase: use 'decided' instead of 'made a decision'.
 doc.md:15:44:Simple.Vocabulary:'leverage' is outside Basic English. Say it in shorter words.
 doc.md:15:44:Voices.InflatedWords:Inflated word: use 'use' instead of 'leverage'.
+doc.md:16:1:Simple.Ease:This paragraph scores 33.00 on reading ease. Basic English reads above 80.
 doc.md:16:1:Simple.Vocabulary:'several' is outside Basic English. Say it in shorter words.
 doc.md:16:9:Simple.Vocabulary:'caching' is outside Basic English. Say it in shorter words.
 doc.md:16:17:Simple.Vocabulary:'solutions' is outside Basic English. Say it in shorter words.
@@ -60,6 +63,7 @@ doc.md:19:1:Simple.Vocabulary:'numerous' is outside Basic English. Say it in sho
 doc.md:19:14:Simple.Vocabulary:'multidimensional' is outside Basic English. Say it in shorter words.
 doc.md:19:32:Simple.Vocabulary:'necessitating' is outside Basic English. Say it in shorter words.
 doc.md:19:46:Simple.Vocabulary:'individual' is outside Basic English. Say it in shorter words.
+doc.md:20:1:Simple.Ease:This paragraph scores -106.00 on reading ease. Basic English reads above 80.
 doc.md:20:1:Simple.Vocabulary:'elaboration' is outside Basic English. Say it in shorter words.
 doc.md:20:16:Simple.Vocabulary:'unprecedented' is outside Basic English. Say it in shorter words.
 doc.md:20:30:Simple.Vocabulary:'comprehensiveness' is outside Basic English. Say it in shorter words.

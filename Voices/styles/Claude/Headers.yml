@@ -7,3 +7,22 @@ level: suggestion
 scope: raw
 token: '(?m)^#{1,6} '
 max: 2
+
+tests:
+  - name: fires
+    input: |
+      # One
+      
+      ## Two
+      
+      ## Three
+      
+      Text.
+    want: |
+      1:1:Claude.Headers:Found 3 headers. Claude uses the minimum formatting needed for clarity.
+  - name: clean
+    input: |
+      # One
+      
+      Text.
+    want: ""

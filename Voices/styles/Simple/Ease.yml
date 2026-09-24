@@ -1,0 +1,20 @@
+# Basic English reads easily by construction: short words, and the sentences
+# that short words allow. A paragraph that scores below 80 on Flesch reading
+# ease has kept the words and lost the sentences.
+extends: metric
+message: "This paragraph scores %s on reading ease. Basic English reads above 80."
+level: warning
+scope: paragraph
+formula: round(flesch_reading_ease)
+condition: "< 80"
+
+tests:
+  - name: fires
+    input: |
+      Notwithstanding the aforementioned considerations, the organization's interdepartmental reorganization initiative necessitated comprehensive reevaluation of institutional methodologies.
+    want: |
+      1:1:Simple.Ease:This paragraph scores -152.00 on reading ease. Basic English reads above 80.
+  - name: clean
+    input: |
+      The thing is made again. It is small.
+    want: ""

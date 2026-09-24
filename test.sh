@@ -9,8 +9,9 @@
 # fails silently -- it loads, runs, and reports success -- so "no alerts" only
 # means something when a paired fixture proves the rules fire. Three rules in
 # this package were dead on arrival: a `raw:` list concatenates its entries
-# rather than alternating them, `metric` has no readability formulas, and a
-# token list written in the infinitive never matches the past tense.
+# rather than alternating them, a formula was written for a variable that did
+# not exist, and a token list written in the infinitive never matches the
+# past tense. Each rule now carries its own cases too; see the end.
 #
 # `fixtures/guards/` then pins the negative half: the constructions each rule
 # must leave alone, checked in the same way.
@@ -40,7 +41,7 @@ cp -R "$root/Voices/styles" "$work/styles"
 cp -R "$std" "$work/styles/Std"
 mkdir -p "$root/testdata"
 
-voices="Direct GenZ Coach Simple Claude"
+voices="Direct GenZ Coach Simple Claude Human"
 
 # Alerts that share a line and column come back in whatever order the checks
 # ran, and that order is not part of the contract -- it has changed between
@@ -125,30 +126,13 @@ INI
 done
 
 # Every rule has to fire on something. A Vale rule that matches nothing loads,
-# runs, and reports success, so a golden file can only prove a rule works by
-# containing it -- and a rule no fixture reaches is indistinguishable from one
-# that is broken. Vale cannot report this itself: there is no `--unused`, and
-# an unmatched rule leaves no trace in the output to count.
-#
-# So the goldens are the coverage report. If a new rule fires nowhere, give it
-# a line in whichever fixture fits, or in fixtures/guards/Sweep.md, which
-# exists for the rules no other fixture happens to reach.
-if [ "$update" -eq 0 ]; then
-	# `_shared` holds fragments rules extend, not rules -- Vale skips the
-	# directory when loading, so nothing there can fire.
-	(cd "$root/Voices/styles" && find . -name '*.yml' ! -path '*/_shared/*') |
-		sed 's|^\./||; s|/|.|; s|\.yml$||' | sort > "$work/rules"
-	cat "$root"/testdata/*.txt | cut -d: -f4 | sort -u > "$work/fired"
-
-	missing=$(comm -23 "$work/rules" "$work/fired")
-	if [ -n "$missing" ]; then
-		echo "FAIL coverage: no fixture reaches these rules, so nothing shows they work"
-		printf '%s\n' "$missing" | sed 's/^/       /'
-		status=1
-	else
-		echo "ok   coverage ($(wc -l < "$work/rules" | tr -d " ") rules, every one exercised)"
-	fi
-fi
+# runs, and reports success, so each rule carries its own cases in a `tests:`
+# block, and `--coverage` fails the run on any rule no case makes fire. The
+# assembled StylesPath runs them, since the length rules resolve their Std
+# parent through it; coverage is asked of the voices, not of Std.
+styles=$(cd "$root/Voices/styles" && find . -maxdepth 1 -type d ! -name . ! -name config | sed 's|^\./|styles/|' | sort | tr '\n' ' ')
+# shellcheck disable=SC2086
+(cd "$work" && "$vale" test --coverage $styles) || status=1
 
 # The repository lints its own prose with the same rules it ships, through
 # the same assembled StylesPath the fixtures use -- the root .vale.ini alone

@@ -31,25 +31,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # The length rules extend Std.SentenceLength, which needs the rule
-      # inheritance on Vale's v3 branch -- built from source, outside the
-      # checkout, until the next release ships it and the tarball returns.
-      - uses: actions/checkout@v4
-        with:
-          repository: vale-cli/vale
-          ref: v3
-          path: vale-src
+      - name: Install Vale
+        env:
+          VALE_VERSION: 3.22.0
+        run: |
+          curl -sL --fail -o vale.tar.gz \
+            "https://github.com/vale-cli/vale/releases/download/v${VALE_VERSION}/vale_${VALE_VERSION}_Linux_64-bit.tar.gz"
+          mkdir -p "$RUNNER_TEMP/bin"
+          tar xzf vale.tar.gz -C "$RUNNER_TEMP/bin" vale
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
       - uses: actions/checkout@v4
         with:
           repository: vale-cli/Std
           path: std-src
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: vale-src/go.mod
-      - run: |
-          go build -o "$RUNNER_TEMP/bin/vale" ./cmd/vale
-          echo "$RUNNER_TEMP/bin" >> $GITHUB_PATH
-        working-directory: vale-src
 
       # Fixtures, guards, coverage, and the repository's own self-lint, all
       # against a StylesPath assembled with Std present but not enabled --

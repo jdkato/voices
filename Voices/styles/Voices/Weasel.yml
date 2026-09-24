@@ -11,3 +11,14 @@ tokens:
   - many argue
   - widely regarded as
   - studies show
+
+tests:
+  - name: fires
+    input: |
+      Experts agree it works.
+    want: |
+      1:1:Voices.Weasel:Weasel attribution: 'Experts agree'. Name the source or cut the claim.
+  - name: clean
+    input: |
+      The benchmark shows it works.
+    want: ""

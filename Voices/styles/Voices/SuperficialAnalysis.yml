@@ -8,3 +8,14 @@ ignorecase: true
 nonword: true
 tokens:
   - ',\s+(?:highlighting|underscoring|reflecting|showcasing|demonstrating)\b'
+
+tests:
+  - name: fires
+    input: |
+      Sales rose, highlighting demand.
+    want: |
+      1:11:Voices.SuperficialAnalysis:Superficial analysis: ', highlighting'. Say what it does for the reader.
+  - name: clean
+    input: |
+      Sales rose because demand did.
+    want: ""

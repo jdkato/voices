@@ -1,0 +1,19 @@
+# The em dash, twice a paragraph. One is punctuation; the rest are a model
+# joining clauses it should have split.
+extends: occurrence
+message: "%d dashes in one paragraph. One is the most a person uses."
+level: warning
+scope: paragraph
+max: 1
+token: '—|–|--'
+
+tests:
+  - name: fires
+    input: |
+      The cache is cold — nobody warmed it — so the first request is slow.
+    want: |
+      1:19:Human.Dashes:2 dashes in one paragraph. One is the most a person uses.
+  - name: clean
+    input: |
+      The cache is cold — nobody warmed it. So the first request is slow.
+    want: ""

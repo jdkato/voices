@@ -12,3 +12,14 @@ tokens:
   - plays a vital role
   - solidifies its position
   - underscores its significance
+
+tests:
+  - name: fires
+    input: |
+      This stands as a testament to the team.
+    want: |
+      1:6:Voices.Puffery:Importance puffery: 'stands as a testament'. State the fact and let the reader judge.
+  - name: clean
+    input: |
+      The team shipped it.
+    want: ""

@@ -7,3 +7,14 @@ message: "'%s' is outside Basic English. Say it in shorter words."
 level: warning
 dictionaries:
   - Simple
+
+tests:
+  - name: fires
+    input: |
+      The component re-renders.
+    want: |
+      1:5:Simple.Vocabulary:'component' is outside Basic English. Say it in shorter words.
+  - name: clean
+    input: |
+      The thing is made again.
+    want: ""

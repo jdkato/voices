@@ -8,3 +8,14 @@ ignorecase: true
 nonword: true
 tokens:
   - '(?m)^(?:In conclusion|Ultimately|Overall)\b'
+
+tests:
+  - name: fires
+    input: |
+      In conclusion, it works.
+    want: |
+      1:1:Voices.Recap:Recap ending: 'In conclusion'. End on the last concrete point.
+  - name: clean
+    input: |
+      It works.
+    want: ""

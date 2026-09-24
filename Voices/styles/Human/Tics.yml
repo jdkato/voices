@@ -1,0 +1,62 @@
+# The words a model reaches for and a person rarely does. The list is the
+# overlap of the published counts of words that rose in frequency with
+# machine-written prose, minus what the shared core already catches.
+extends: existence
+message: "'%s' is a tic. Say the plain thing, or cut it."
+level: error
+ignorecase: true
+tokens:
+  - "crucial"
+  - "pivotal"
+  - "vibrant"
+  - "bustling"
+  - "nuanced"
+  - "intricacies"
+  - "holistic"
+  - "synergy"
+  - "seamless"
+  - "seamlessly"
+  - "unlock"
+  - "unleash"
+  - "dive into"
+  - "deep dive"
+  - "navigate the"
+  - "landscape"
+  - "in today's"
+  - "comprehensive"
+  - "testament"
+  - "showcase"
+  - "showcases"
+  - "showcased"
+  - "underscore"
+  - "underscores"
+  - "underscored"
+  - "at the end of the day"
+  - "groundbreaking"
+  - "unwavering"
+  - "garner"
+  - "garnered"
+  - "elucidate"
+  - "elucidated"
+  - "a myriad of"
+  - "plethora"
+  - "boasts"
+  - "valuable insights"
+  - "whether you're a"
+  - "look no further"
+  - "rest assured"
+  - "in essence"
+
+tests:
+  - name: fires
+    input: |
+      This crucial change will unlock a seamless experience across the landscape.
+    want: |
+      1:6:Human.Tics:'crucial' is a tic. Say the plain thing, or cut it.
+      1:26:Human.Tics:'unlock' is a tic. Say the plain thing, or cut it.
+      1:35:Human.Tics:'seamless' is a tic. Say the plain thing, or cut it.
+      1:66:Human.Tics:'landscape' is a tic. Say the plain thing, or cut it.
+  - name: clean
+    input: |
+      This change makes the login faster.
+    want: ""

@@ -1,0 +1,29 @@
+# The first line of a reply that answers a prompt rather than a person.
+# Anchored to the start of a line.
+extends: existence
+message: "Opener: '%s'. Start with the answer."
+level: error
+nonword: true
+tokens:
+  - '(?im)^\s*Great question'
+  - '(?im)^\s*Certainly!'
+  - '(?im)^\s*Absolutely!'
+  - '(?im)^\s*Sure!'
+  - '(?im)^\s*Of course!'
+  - '(?im)^\s*I''d be happy to'
+  - '(?im)^\s*I''d be glad to'
+  - '(?im)^\s*As an AI'
+  - '(?im)^\s*As a language model'
+  - '(?im)^\s*Thank you for your question'
+  - '(?im)^\s*Thank you for the question'
+
+tests:
+  - name: fires
+    input: |
+      Great question! The cache is cold.
+    want: |
+      1:1:Human.Openers:Opener: 'Great question'. Start with the answer.
+  - name: clean
+    input: |
+      The cache is cold.
+    want: ""
